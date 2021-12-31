@@ -15,33 +15,32 @@
 #
 #
 # Phantom App imports
+import base64
+import copy
+import csv
+import imp
+import ipaddress
+import json
+import ntpath
+import re
+import sys
+import textwrap
+from base64 import b64encode
+from builtins import str
+from urllib.parse import unquote
+
 import phantom.app as phantom
 import phantom.rules as phantom_rules
-from phantom.base_connector import BaseConnector
+import requests
+import six
+from bs4 import UnicodeDammit
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 # Local imports
 import parse_callbacks as pc
-import winrm_consts as consts
-
-import re
-import imp
-import csv
-import copy
-import json
 import winrm
-import ntpath
-import base64
-import textwrap
-import ipaddress
-import sys
-from base64 import b64encode
-import requests
-from urllib.parse import unquote
-
-from bs4 import UnicodeDammit
-from builtins import str
-import six
+import winrm_consts as consts
 
 
 class RetVal(tuple):
@@ -285,7 +284,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
         return phantom.APP_SUCCESS
 
-    def _run_cmd(self, action_result, cmd, args=None, parse_callback=pc.basic, additional_data=None, async_=False, command_id=None, shell_id=None):
+    def _run_cmd(self, action_result, cmd, args=None, parse_callback=pc.basic,
+                additional_data=None, async_=False, command_id=None, shell_id=None):
         # The parser callback should have the function signature (ActionResult, winrm.Result) -> bool
         # The additional_data is a dictionary which will be passed to the parser, in which case the signature should be
         #  (ActionResult, winrm.Result, **kwargs) -> bool
@@ -1174,8 +1174,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
@@ -1184,12 +1185,14 @@ if __name__ == '__main__':
     argparser.add_argument('input_test_json', help='Input Test JSON file')
     argparser.add_argument('-u', '--username', help='username', required=False)
     argparser.add_argument('-p', '--password', help='password', required=False)
+    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
 
     username = args.username
     password = args.password
+    verify = args.verify
 
     if username is not None and password is None:
 
@@ -1201,7 +1204,7 @@ if __name__ == '__main__':
         try:
             print("Accessing the Login page")
             login_url = BaseConnector._get_phantom_base_url() + 'login'
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=verify)   # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1214,11 +1217,12 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url,   # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
+                                verify=verify, data=data, headers=headers)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platfrom. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -1235,4 +1239,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)

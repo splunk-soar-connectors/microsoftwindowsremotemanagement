@@ -17,16 +17,16 @@
 # A list of methods to parse output
 # The first few are generic methods, mainly for actions that don't have any output that needs to be parsed
 # in any specific manner
-import phantom.app as phantom
-from phantom.vault import Vault
-import xmltodict
-import tempfile
 import base64
+import json
+import tempfile
+from builtins import str
 from collections import OrderedDict
 
-from builtins import str
+import phantom.app as phantom
 import six
-import json
+import xmltodict
+from phantom.vault import Vault
 
 
 def clean_str(input_str):
