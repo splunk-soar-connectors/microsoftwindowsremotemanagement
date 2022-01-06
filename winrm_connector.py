@@ -121,9 +121,11 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_INT.format(msg="", param=key)), None
 
             if parameter < 0:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_INT.format(msg="non-negative", param=key)), None
+                return action_result.set_status(phantom.APP_ERROR,
+                                                consts.WINRM_ERR_INVALID_INT.format(msg="non-negative", param=key)), None
             if not allow_zero and parameter == 0:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_INT.format(msg="non-zero positive", param=key)), None
+                return action_result.set_status(phantom.APP_ERROR,
+                                                consts.WINRM_ERR_INVALID_INT.format(msg="non-zero positive", param=key)), None
 
         return phantom.APP_SUCCESS, parameter
 
@@ -209,7 +211,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     elif type(v) is int:
                         arg_str = "{0}-{1} \"{2}\" ".format(arg_str, k, str(v))
                     else:
-                        arg_str = "{0}-{1} \"{2}\" ".format(arg_str, k, self._sanitize_string(self._handle_py_ver_compat_for_input_str(v)))
+                        arg_str = "{0}-{1} \"{2}\" ".format(arg_str, k, self._sanitize_string(
+                            self._handle_py_ver_compat_for_input_str(v)))
             if type(arg) is str:
                 if (whitelist_args and arg not in whitelist_args) or not arg.isalpha():
                     return RetVal(action_result.set_status(
@@ -303,7 +306,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 try:
                     resp = winrm.Response(self._protocol.get_command_output(shell_id, command_id))
                 except:
-                    return action_result.set_status(phantom.APP_ERROR, "Failed to get command output from 'command_id' and 'shell_id'")
+                    return action_result.set_status(phantom.APP_ERROR, "Failed to get command output from 'command_id' "
+                                                                       "and 'shell_id'")
                 self._protocol.close_shell(shell_id)
             elif async_:
                 shell_id = self._protocol.open_shell()
@@ -337,7 +341,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR,
                 "Error parsing output: {}".format(self._get_error_message_from_exception(e)))
 
-    def _run_ps(self, action_result, script, parse_callback=pc.basic, additional_data=None, async_=False, command_id=None, shell_id=None):
+    def _run_ps(self, action_result, script, parse_callback=pc.basic, additional_data=None, async_=False,
+                command_id=None, shell_id=None):
         if additional_data is None:
             additional_data = {}
         resp = None
@@ -488,7 +493,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         direction = param.get('direction')
         if direction and direction not in consts.DIRECTION_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.DIRECTION_VALUE_LIST, "direction"))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(
+                consts.DIRECTION_VALUE_LIST, "direction"))
 
         if not self._init_session(action_result, param):
             return action_result.get_status()
