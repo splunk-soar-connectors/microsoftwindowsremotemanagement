@@ -1,6 +1,6 @@
 # File: winrm_consts.py
 #
-# Copyright (c) 2018-2021 Splunk Inc.
+# Copyright (c) 2018-2022 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -98,7 +98,8 @@ WINRM_ERR_INVALID_VAULT_ID = "Could not retrieve vault file"
 WINRM_ERR_CODE_MSG = "Error code unavailable"
 WINRM_ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 WINRM_PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-WINRM_TYPE_ERR_MSG = "Error occurred while connecting to the Winrm Server. Please check the asset configuration and|or the action parameters"
+WINRM_TYPE_ERR_MSG = "Error occurred while connecting to the Winrm Server. Please check the asset configuration and|or " \
+                     "the action parameters"
 
 # Constants relating to value_list check
 DIRECTION_VALUE_LIST = ["in", "out"]
