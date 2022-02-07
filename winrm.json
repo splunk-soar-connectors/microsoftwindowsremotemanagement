@@ -15,7 +15,7 @@
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
     "min_phantom_version": "5.1.0",
-    "fips_compliant": true,
+    "fips_compliant": false,
     "python_version": "3",
     "latest_tested_versions": [
         "On-premise, Windows Server 2012 R2 Standard"
