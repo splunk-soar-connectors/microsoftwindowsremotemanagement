@@ -6,7 +6,7 @@ Connector Version: 2\.2\.3
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 5\.0\.0  
+Minimum Product Version: 5\.1\.0  
 
 This app integrates with the Windows Remote Management service to execute various actions
 
