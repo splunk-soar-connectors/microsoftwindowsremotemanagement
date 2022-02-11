@@ -2,16 +2,16 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2\.1\.3  
+Connector Version: 2\.2\.3  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.10\.0\.40961  
+Minimum Product Version: 5\.1\.0  
 
 This app integrates with the Windows Remote Management service to execute various actions
 
 [comment]: # ""
-[comment]: # "    File: readme.md"
+[comment]: # "    File: README.md"
 [comment]: # "    Copyright (c) 2018-2022 Splunk Inc."
 [comment]: # "    "
 [comment]: # "    Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
@@ -56,18 +56,21 @@ The custom parser should be a file added to the vault containing a function name
 .
 
 ``` shell
-import phantom.app as phantom
+        
+        import phantom.app as phantom
 
 
-def custom_parser(action_result, response):
-    # type: (ActionResult, winrm.Response) -> bool
-    data = {}
-    data['status_code'] = response.status_code
-    data['std_out'] = response.std_out
-    data['std_err'] = response.std_err
+        def custom_parser(action_result, response):
+            # type: (ActionResult, winrm.Response) -> bool
+            data = {}
+            data['status_code'] = response.status_code
+            data['std_out'] = response.std_out
+            data['std_err'] = response.std_err
 
-    action_result.add_data(data)
-    return phantom.APP_SUCCESS
+            action_result.add_data(data)
+            return phantom.APP_SUCCESS
+        
+        
 ```
 
 This is equivalent to the default parser which is used if nothing is provided. It takes in an
@@ -78,37 +81,40 @@ Here is an example of a parser that will extract all the IPs from the output, an
 non-zero status code.
 
 ``` shell
-import re
-import phantom.app as phantom
-from phantom import utils as ph_utils
+        
+        import re
+        import phantom.app as phantom
+        from phantom import utils as ph_utils
 
 
-def custom_parser(action_result, response):
-    # type: (ActionResult, winrm.Response) -> bool
-    data = {}
-    data['status_code'] = response.status_code
-    data['std_out'] = response.std_out
-    data['std_err'] = response.std_err
+        def custom_parser(action_result, response):
+            # type: (ActionResult, winrm.Response) -> bool
+            data = {}
+            data['status_code'] = response.status_code
+            data['std_out'] = response.std_out
+            data['std_err'] = response.std_err
 
-    if data['status_code'] != 0:
-        # This will be the message displayed
-        action_result.add_data(data)
-        return action_result.set_status(
-            phantom.APP_ERROR, "Error: Returned a non-zero status code"
-        )
+            if data['status_code'] != 0:
+                # This will be the message displayed
+                action_result.add_data(data)
+                return action_result.set_status(
+                    phantom.APP_ERROR, "Error: Returned a non-zero status code"
+                )
 
-    # This can still return values like 999.999.999.999
-    ips = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', data['std_out'])
-    # Get only valid IPs
-    filtered_ips = []
-    for ip in ips:
-        if ph_utils.is_ip(ip):
-            filtered_ips.append(ip)
+            # This can still return values like 999.999.999.999
+            ips = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', data['std_out'])
+            # Get only valid IPs
+            filtered_ips = []
+            for ip in ips:
+                if ph_utils.is_ip(ip):
+                    filtered_ips.append(ip)
 
-    data['ips'] = filtered_ips
+            data['ips'] = filtered_ips
 
-    action_result.add_data(data)
-    return phantom.APP_SUCCESS
+            action_result.add_data(data)
+            return phantom.APP_SUCCESS
+        
+        
 ```
 
 As a final thing to consider, the playbook editor will not be aware of any custom data paths which
