@@ -358,7 +358,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 if len(resp.std_err):
                     resp.std_err = self._session._clean_error_msg(resp.std_err)
                     if isinstance(resp.std_err, bytes):
-                        resp.std_err = resp.std_err.decode('UTF-8')
+                        resp.std_err = resp.std_err.decode('UTF-8', 'backslashreplace')
+
             elif async_:
                 encoded_ps = b64encode(script.encode('utf_16_le')).decode('ascii')
                 shell_id = self._protocol.open_shell()
