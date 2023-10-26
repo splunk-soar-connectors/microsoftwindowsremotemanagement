@@ -296,11 +296,11 @@ def list_firewall_rules(action_result, response, **kwargs):
 def create_firewall_rule(action_result, response):
     if response.status_code:
         try:
-            msg = response.std_out.splitlines()[1]
+            message = response.std_out.splitlines()[1]
         except:
-            msg = response.std_out
+            message = response.std_out
         return action_result.set_status(
-            phantom.APP_ERROR, "Error running command: {}".format(msg)
+            phantom.APP_ERROR, "Error running command: {}".format(message)
         )
     return phantom.APP_SUCCESS
 
