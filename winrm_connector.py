@@ -33,13 +33,13 @@ import phantom.app as phantom
 import phantom.rules as phantom_rules
 import requests
 import six
+import winrm
 from bs4 import UnicodeDammit
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
 # Local imports
 import parse_callbacks as pc
-import winrm
 import winrm_consts as consts
 
 
