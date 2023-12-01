@@ -19,7 +19,6 @@
 # in any specific manner
 import base64
 import json
-import tempfile
 from builtins import str
 from collections import OrderedDict
 
@@ -453,13 +452,7 @@ def decodeb64_add_to_vault(action_result, response, container_id, file_name):
     b64string = response.std_out
 
     try:
-        if hasattr(Vault, 'create_attachment'):
-            resp = Vault.create_attachment(base64.b64decode(b64string), container_id, file_name=file_name)
-        else:
-            tmp_file = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir='/opt/phantom/vault/tmp')
-            tmp_file.write(base64.b64decode(b64string))
-            tmp_file.close()
-            resp = Vault.add_attachment(tmp_file.name, container_id, file_name=file_name)
+        resp = Vault.create_attachment(base64.b64decode(b64string), container_id, file_name=file_name)
     except Exception as e:
         return action_result.set_status(
             phantom.APP_ERROR, "Error adding file to vault", e
