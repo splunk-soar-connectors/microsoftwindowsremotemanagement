@@ -3340,10 +3340,6 @@
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
-            },
-            {
                 "module": "requests_ntlm",
                 "input_file": "wheels/py3/requests_ntlm-1.2.0-py3-none-any.whl"
             },
