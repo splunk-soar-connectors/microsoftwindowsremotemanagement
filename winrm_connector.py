@@ -33,13 +33,13 @@ import phantom.app as phantom
 import phantom.rules as phantom_rules
 import requests
 import six
+import winrm
 from bs4 import UnicodeDammit
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
 
 # Local imports
 import parse_callbacks as pc
-import winrm
 import winrm_consts as consts
 
 
@@ -81,32 +81,32 @@ class WindowsRemoteManagementConnector(BaseConnector):
             if e.args:
                 if len(e.args) > 1:
                     error_code = e.args[0]
-                    error_msg = e.args[1]
+                    error_message = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = consts.WINRM_ERR_CODE_MSG
-                    error_msg = e.args[0]
+                    error_code = consts.WINRM_ERROR_CODE_MESSAGE
+                    error_message = e.args[0]
             else:
-                error_code = consts.WINRM_ERR_CODE_MSG
-                error_msg = consts.WINRM_ERR_MSG_UNAVAILABLE
+                error_code = consts.WINRM_ERROR_CODE_MESSAGE
+                error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
         except:
-            error_code = consts.WINRM_ERR_CODE_MSG
-            error_msg = consts.WINRM_ERR_MSG_UNAVAILABLE
+            error_code = consts.WINRM_ERROR_CODE_MESSAGE
+            error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
 
         try:
-            error_msg = self._handle_py_ver_compat_for_input_str(error_msg)
+            error_message = self._handle_py_ver_compat_for_input_str(error_message)
         except TypeError:
-            error_msg = consts.WINRM_TYPE_ERR_MSG
+            error_message = consts.WINRM_TYPE_ERROR_MESSAGE
         except:
-            error_msg = consts.WINRM_ERR_MSG_UNAVAILABLE
+            error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
 
         try:
-            if error_code in consts.WINRM_ERR_CODE_MSG:
-                error_text = "Error Message: {0}".format(error_msg)
+            if error_code in consts.WINRM_ERROR_CODE_MESSAGE:
+                error_text = "Error Message: {0}".format(error_message)
             else:
-                error_text = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+                error_text = "Error Code: {0}. Error Message: {1}".format(error_code, error_message)
         except:
-            self.debug_print(consts.WINRM_PARSE_ERR_MSG)
-            error_text = consts.WINRM_PARSE_ERR_MSG
+            self.debug_print(consts.WINRM_PARSE_ERROR_MESSAGE)
+            error_text = consts.WINRM_PARSE_ERROR_MESSAGE
 
         return error_text
 
@@ -114,18 +114,18 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if parameter is not None:
             try:
                 if not float(parameter).is_integer():
-                    return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_INT.format(msg="", param=key)), None
+                    return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_INT.format(msg="", param=key)), None
 
                 parameter = int(parameter)
             except:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_INT.format(msg="", param=key)), None
+                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_INT.format(msg="", param=key)), None
 
             if parameter < 0:
                 return action_result.set_status(phantom.APP_ERROR,
-                                                consts.WINRM_ERR_INVALID_INT.format(msg="non-negative", param=key)), None
+                                                consts.WINRM_ERROR_INVALID_INT.format(msg="non-negative", param=key)), None
             if not allow_zero and parameter == 0:
                 return action_result.set_status(phantom.APP_ERROR,
-                                                consts.WINRM_ERR_INVALID_INT.format(msg="non-zero positive", param=key)), None
+                                                consts.WINRM_ERROR_INVALID_INT.format(msg="non-zero positive", param=key)), None
 
         return phantom.APP_SUCCESS, parameter
 
@@ -145,10 +145,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
         try:
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID), None
+                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
             file_path = list(file_info)[0].get('path')
         except:
-            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID), None
+            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
             with open(file_path, 'r') as fp:
@@ -164,10 +164,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
         try:
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID), None
+                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
             file_path = list(file_info)[0].get('path')
         except:
-            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID), None
+            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
             custom_parser = imp.load_source('custom_parser', file_path)
@@ -319,7 +319,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             else:
                 resp = self._session.run_cmd(cmd, args)
         except UnicodeDecodeError:
-            return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(consts.WINRM_UNICODE_ERR_MESSAGE))
+            return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR,
                 "Error running command: {}".format(unquote(self._get_error_message_from_exception(e))))
@@ -372,7 +372,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     script = UnicodeDammit(script).unicode_markup
                 resp = self._session.run_ps(script)
         except UnicodeDecodeError:
-            return action_result.set_status(phantom.APP_ERROR, "Error running PowerShell script: {}".format(consts.WINRM_UNICODE_ERR_MESSAGE))
+            return action_result.set_status(phantom.APP_ERROR, "Error running PowerShell script: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR,
                 "Error running PowerShell script: {}".format(self._get_error_message_from_exception(e)))
@@ -493,7 +493,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
         direction = param.get('direction')
         if direction and direction not in consts.DIRECTION_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(
                 consts.DIRECTION_VALUE_LIST, "direction"))
 
         if not self._init_session(action_result, param):
@@ -528,7 +528,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             param.update(other_dict)
         dir = param.get('dir')
         if dir and dir not in consts.DIR_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.DIR_VALUE_LIST, 'dir'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, 'dir'))
 
         val_map = {
             "local_ip": "localip",
@@ -597,11 +597,11 @@ class WindowsRemoteManagementConnector(BaseConnector):
             param.update(other_dict)
         dir = param.get('dir')
         if dir and dir not in consts.DIR_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.DIR_VALUE_LIST, 'dir'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, 'dir'))
 
         action = param.get('action')
         if action and action not in consts.ACTION_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.ACTION_VALUE_LIST, 'action'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.ACTION_VALUE_LIST, 'action'))
 
         val_map = {
             "local_ip": "localip",
@@ -711,7 +711,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             "inactive"
         )
         if phantom.is_fail(ret_val):
-            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_PARTITION)
+            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_PARTITION)
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully deactivated partition")
 
@@ -725,7 +725,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             "active"
         )
         if phantom.is_fail(ret_val):
-            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_PARTITION)
+            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_PARTITION)
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully activated partition")
 
@@ -770,7 +770,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         suffix = "-XML" if xml else ""
         if location.lower() not in consts.LOCATION_VALUE_LIST:
             return action_result.set_status(
-                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.LOCATION_VALUE_LIST, "location")
+                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.LOCATION_VALUE_LIST, "location")
             ), None
         if location.lower() == "domain":
             if not ldap:
@@ -822,7 +822,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         deny_allow = param['deny_allow'].lower()
         if deny_allow not in consts.DENY_ALLOW_VALUE_LIST:
             return action_result.set_status(
-                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MSG.format(consts.DENY_ALLOW_VALUE_LIST, "deny_allow")
+                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DENY_ALLOW_VALUE_LIST, "deny_allow")
             )
 
         file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
@@ -922,10 +922,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
             vault_id = self._handle_py_ver_compat_for_input_str(param['vault_id'])
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
-                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID)
+                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
             path = list(file_info)[0].get('path')
         except:
-            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERR_INVALID_VAULT_ID)
+            return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
 
         destination = self._handle_py_ver_compat_for_input_str(param['destination'])
 
