@@ -319,7 +319,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             else:
                 resp = self._session.run_cmd(cmd, args)
         except UnicodeDecodeError:
-            return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(consts.WINRM_UNICODE_ERR_MSG))
+            return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR,
                 "Error running command: {}".format(unquote(self._get_error_message_from_exception(e))))
@@ -372,7 +372,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     script = UnicodeDammit(script).unicode_markup
                 resp = self._session.run_ps(script)
         except UnicodeDecodeError:
-            return action_result.set_status(phantom.APP_ERROR, "Error running PowerShell script: {}".format(consts.WINRM_UNICODE_ERR_MSG))
+            return action_result.set_status(phantom.APP_ERROR, "Error running PowerShell script: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
             return action_result.set_status(phantom.APP_ERROR,
                 "Error running PowerShell script: {}".format(self._get_error_message_from_exception(e)))

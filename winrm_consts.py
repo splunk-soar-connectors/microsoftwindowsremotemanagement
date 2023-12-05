@@ -87,7 +87,7 @@ $d = "{}"
 [Convert]::ToBase64String([IO.File]::ReadAllBytes($d))
 """
 
-WINRM_UNICODE_ERR_MSG = "Invalid unicode detected"
+WINRM_UNICODE_ERROR_MESSAGE = "Invalid unicode detected"
 
 # Constants relating to '_validate_integer'
 WINRM_ERROR_INVALID_INT = 'Please provide a valid {msg} integer value in the "{param}"'
