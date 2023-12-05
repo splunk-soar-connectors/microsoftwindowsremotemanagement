@@ -14,7 +14,7 @@
     "utctime_updated": "2023-12-05T12:42:47.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
-    "min_phantom_version": "5.5.0",
+    "min_phantom_version": "6.1.1",
     "fips_compliant": true,
     "python_version": "3",
     "latest_tested_versions": [
