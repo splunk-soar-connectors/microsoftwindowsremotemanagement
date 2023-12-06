@@ -358,7 +358,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 if len(resp.std_err):
                     resp.std_err = self._session._clean_error_msg(resp.std_err)
                     if isinstance(resp.std_err, bytes):
-                        resp.std_err = resp.std_err.decode('UTF-8')
+                        resp.std_err = resp.std_err.decode('UTF-8', errors='ignore')
             elif async_:
                 encoded_ps = b64encode(script.encode('utf_16_le')).decode('ascii')
                 shell_id = self._protocol.open_shell()
@@ -850,6 +850,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 self._sanitize_string(file_path), new_policy_str, set_policy_str
             ))
 
+        self.debug_print(ps_script)
+
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
             return ret_val
@@ -971,7 +973,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         path_from = self._handle_py_ver_compat_for_input_str(param['from'])
         path_to = self._handle_py_ver_compat_for_input_str(param['to'])
 
-        ps_script = "& copy {0} {1}".format(
+        ps_script = "$ProgressPreference = 'SilentlyContinue'; & copy {0} {1}".format(
             self._sanitize_string(path_from),
             self._sanitize_string(path_to)
         )
@@ -990,7 +992,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
         force_delete = '-Force ' if param.get('force') else ''
 
-        ps_script = "& del {0}{1}".format(
+        ps_script = "$ProgressPreference = 'SilentlyContinue'; & del {0}{1}".format(
             force_delete,
             self._sanitize_string(file_path)
         )
