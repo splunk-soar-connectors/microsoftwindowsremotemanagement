@@ -346,6 +346,11 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if additional_data is None:
             additional_data = {}
         resp = None
+
+        if script is not None:
+            # Suppress the "progress" output that PowerShell sends to Standard Error
+            script = "$ProgressPreference = 'SilentlyContinue'; \n " + script
+
         try:
             if command_id:
                 if shell_id is None:
@@ -358,7 +363,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 if len(resp.std_err):
                     resp.std_err = self._session._clean_error_msg(resp.std_err)
                     if isinstance(resp.std_err, bytes):
-                        resp.std_err = resp.std_err.decode('UTF-8')
+                        resp.std_err = resp.std_err.decode('UTF-8', errors='backslashreplace')
             elif async_:
                 encoded_ps = b64encode(script.encode('utf_16_le')).decode('ascii')
                 shell_id = self._protocol.open_shell()
@@ -849,6 +854,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             ps_script = '{}{}'.format(consts.APPLOCKER_BASE_SCRIPT, consts.APPLOCKER_CREATE_POLICY_DENY.format(
                 self._sanitize_string(file_path), new_policy_str, set_policy_str
             ))
+
+        self.debug_print(ps_script)
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):

@@ -10,11 +10,11 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2018-2023 Splunk Inc.",
-    "app_version": "2.2.5",
+    "app_version": "2.2.6",
     "utctime_updated": "2023-12-05T12:42:47.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
-    "min_phantom_version": "5.5.0",
+    "min_phantom_version": "6.1.1",
     "fips_compliant": true,
     "python_version": "3",
     "latest_tested_versions": [
@@ -3338,10 +3338,6 @@
             {
                 "module": "pywinrm",
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
-            },
-            {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
             },
             {
                 "module": "requests_ntlm",
