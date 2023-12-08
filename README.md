@@ -837,14 +837,16 @@ For best results, the <b>file path</b> parameter should be an absolute path to a
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **ip_hostname** |  optional  | IP/Hostname | string |  `ip`  `host name` 
-**file_path** |  required  | Path to file | string |  `file path` 
+**file_path** |  required  | Path to file / directory | string |  `file path` 
 **force** |  optional  | Use the force flag for delete | boolean | 
+**recurse** |  optional  | Use the recurse flag to delete directory content recursively | boolean | 
 
 #### Action Output
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.parameter.file_path | string |  `file path`  |   C:\\Windows\\System32\\notepad.exe 
 action_result.parameter.force | boolean |  |   True  False 
+action_result.parameter.recurse | boolean |  |   True  False 
 action_result.parameter.ip_hostname | string |  `ip`  `host name`  |   8.8.8.8  8.8.8.8\\testphantom.local 
 action_result.data | string |  |  
 action_result.status | string |  |   success  failed 
