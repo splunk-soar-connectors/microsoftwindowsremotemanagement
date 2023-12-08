@@ -1,6 +1,6 @@
 # File: winrm_consts.py
 #
-# Copyright (c) 2018-2022 Splunk Inc.
+# Copyright (c) 2018-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,19 +87,19 @@ $d = "{}"
 [Convert]::ToBase64String([IO.File]::ReadAllBytes($d))
 """
 
-WINRM_UNICODE_ERR_MESSAGE = "Invalid unicode detected"
+WINRM_UNICODE_ERROR_MESSAGE = "Invalid unicode detected"
 
 # Constants relating to '_validate_integer'
-WINRM_ERR_INVALID_INT = 'Please provide a valid {msg} integer value in the "{param}"'
-WINRM_ERR_PARTITION = "Failed to fetch system volume, Please check the asset configuration and|or \"ip hostname\" parameter"
-WINRM_ERR_INVALID_VAULT_ID = "Could not retrieve vault file"
+WINRM_ERROR_INVALID_INT = 'Please provide a valid {msg} integer value in the "{param}"'
+WINRM_ERROR_PARTITION = "Failed to fetch system volume, Please check the asset configuration and|or \"ip hostname\" parameter"
+WINRM_ERROR_INVALID_VAULT_ID = "Could not retrieve vault file"
 
 # Constants relating to '_get_error_message_from_exception'
-WINRM_ERR_CODE_MSG = "Error code unavailable"
-WINRM_ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
-WINRM_PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-WINRM_TYPE_ERR_MSG = "Error occurred while connecting to the Winrm Server. Please check the asset configuration and|or " \
-                     "the action parameters"
+WINRM_ERROR_CODE_MESSAGE = "Error code unavailable"
+WINRM_ERROR_MESSAGE_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
+WINRM_PARSE_ERROR_MESSAGE = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
+WINRM_TYPE_ERROR_MESSAGE = ("Error occurred while connecting to the Winrm Server. "
+                            "Please check the asset configuration and|or the action parameters")
 
 # Constants relating to value_list check
 DIRECTION_VALUE_LIST = ["in", "out"]
@@ -107,4 +107,4 @@ DIR_VALUE_LIST = ["in", "out"]
 ACTION_VALUE_LIST = ["allow", "block", "bypass"]
 LOCATION_VALUE_LIST = ["local", "domain", "effective"]
 DENY_ALLOW_VALUE_LIST = ["deny", "allow"]
-VALUE_LIST_VALIDATION_MSG = "Please provide valid input from {} in '{}' action parameter"
+VALUE_LIST_VALIDATION_MESSAGE = "Please provide valid input from {} in '{}' action parameter"
