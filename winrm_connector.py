@@ -995,11 +995,13 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
-        force_delete = '-Force ' if param.get('force') else ''
+        recurse_delete = ' -Recurse' if param.get('recurse') else ''
+        force_delete = ' -Force' if param.get('force') else ''
 
-        ps_script = "& del {0}{1}".format(
-            force_delete,
-            self._sanitize_string(file_path)
+        ps_script = "Remove-Item -Path {0}{1}{2}".format(
+            self._sanitize_string(file_path),
+            recurse_delete,
+            force_delete
         )
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
