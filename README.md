@@ -144,6 +144,9 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **username** |  required  | string | Username
 **password** |  required  | password | Password
 **transport** |  required  | string | Type of transport to use
+**cert_pem_path** |  optional  | string | Path to SSL certificate PEM file
+**cert_key_pem_path** |  optional  | string | Path to SSL key file
+**ca_trust_path** |  optional  | string | Path to trusted CRT file
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
