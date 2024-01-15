@@ -1,6 +1,6 @@
 # File: winrm_connector.py
 #
-# Copyright (c) 2018-2023 Splunk Inc.
+# Copyright (c) 2018-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # The breaking character in PS is '`', so first we break any breaking characters, then we
         # break any double quotes which are found, then we break any $, which is used to declare variables
         return string.replace('`', '``').replace('"', '`"').replace('$', '`$').replace('&', '`&').replace(')', '`)').replace('(', '`(')
-    
+
     def _get_fips_enabled(self):
         try:
             from phantom_common.install_info import is_fips_enabled
@@ -286,11 +286,11 @@ class WindowsRemoteManagementConnector(BaseConnector):
             if domain:
                 username = r'{}\{}'.format(domain, username)
         elif transport == 'kerberos':
-                username = r'{}\{}'.format(domain, username)
+            username = r'{}\{}'.format(domain, username)
         elif transport == 'certificate':
-                username = r'{}\{}'.format(domain, username)
-                cert_pem_path = config.get(consts.WINRM_CONFIG_CERT_PEM)
-                cert_key_pem_path = config.get(consts.WINRM_CONFIG_CERT_KEY_PEM)
+            username = r'{}\{}'.format(domain, username)
+            cert_pem_path = config.get(consts.WINRM_CONFIG_CERT_PEM)
+            cert_key_pem_path = config.get(consts.WINRM_CONFIG_CERT_KEY_PEM)
         elif transport == 'credssp':
             return action_result.set_status(
                 phantom.APP_ERROR, "This transport type is not yet implemented"

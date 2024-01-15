@@ -9,7 +9,7 @@
     "product_name": "Windows Remote Management",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2018-2023 Splunk Inc.",
+    "license": "Copyright (c) 2018-2024 Splunk Inc.",
     "app_version": "2.2.6",
     "utctime_updated": "2023-12-05T12:42:47.000000Z",
     "package_name": "phantom_winrm",
