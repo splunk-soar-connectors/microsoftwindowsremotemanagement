@@ -72,10 +72,30 @@
             "required": true,
             "value_list": [
                 "basic",
-                "ntlm"
+                "ntlm",
+                "certificate",
+                "kerberos"
             ],
             "default": "basic",
             "order": 7
+        },
+        "cert_pem_path": {
+            "description": "Path to SSL certificate PEM file",
+            "data_type": "string",
+            "required": false,
+            "order": 8
+        },
+        "cert_key_pem_path": {
+            "description": "Path to SSL key file",
+            "data_type": "string",
+            "required": false,
+            "order": 9
+        },
+        "ca_trust_path": {
+            "description": "Path to trusted CRT file",
+            "data_type": "string",
+            "required": false,
+            "order": 10
         }
     },
     "actions": [
