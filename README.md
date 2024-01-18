@@ -2,7 +2,7 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.2.6  
+Connector Version: 2.2.7  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
@@ -12,7 +12,7 @@ This app integrates with the Windows Remote Management service to execute variou
 
 [comment]: # ""
 [comment]: # "    File: README.md"
-[comment]: # "    Copyright (c) 2018-2023 Splunk Inc."
+[comment]: # "    Copyright (c) 2018-2024 Splunk Inc."
 [comment]: # "    "
 [comment]: # "    Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
 [comment]: # ""
@@ -144,6 +144,9 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **username** |  required  | string | Username
 **password** |  required  | password | Password
 **transport** |  required  | string | Type of transport to use
+**cert_pem_path** |  optional  | string | Path to SSL certificate PEM file
+**cert_key_pem_path** |  optional  | string | Path to SSL key file
+**ca_trust_path** |  optional  | string | Path to trusted CRT file
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
