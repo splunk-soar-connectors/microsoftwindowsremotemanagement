@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2018-2023 Splunk Inc.",
-    "app_version": "2.2.7",
+    "app_version": "2.2.6",
     "utctime_updated": "2023-12-05T12:42:47.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
