@@ -1,6 +1,6 @@
 # File: winrm_connector.py
 #
-# Copyright (c) 2018-2023 Splunk Inc.
+# Copyright (c) 2018-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -187,19 +187,6 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # break any double quotes which are found, then we break any $, which is used to declare variables
         return string.replace('`', '``').replace('"', '`"').replace('$', '`$').replace('&', '`&').replace(')', '`)').replace('(', '`(')
 
-    def _get_fips_enabled(self):
-        try:
-            from phantom_common.install_info import is_fips_enabled
-        except ImportError:
-            return False
-
-        fips_enabled = is_fips_enabled()
-        if fips_enabled:
-            self.debug_print('FIPS is enabled')
-        else:
-            self.debug_print('FIPS is not enabled')
-        return fips_enabled
-
     def _create_ps_script(self, action_result, args, whitelist_args=set(), cmd_prefix="", cmd_suffix=""):
         # Here, you can pass it something like {"val1": "value"} which will generate a string for "-val1 value"
         # "For your convenience" you can also pass it a list of strings and dicts, something like [val1, {"val2": "asdf"}, foo],
@@ -237,19 +224,19 @@ class WindowsRemoteManagementConnector(BaseConnector):
     def _init_session(self, action_result, param=None):
         config = self.get_config()
 
-        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, 'http')
+        default_protocol = config.get('default_protocol', 'http')
         ret_val, default_port = self._validate_integer(
             action_result,
-            config.get(consts.WINRM_CONFIG_PORT, 5985 if default_protocol == 'http' else 5986),
+            config.get('default_port', 5985 if default_protocol == 'http' else 5986),
             "Default port",
             True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        endpoint = self._handle_py_ver_compat_for_input_str(config.get(consts.WINRM_CONFIG_ENDPOINT))
         if param:
-            endpoint = self._handle_py_ver_compat_for_input_str(param.get('ip_hostname', endpoint))
-
+            endpoint = self._handle_py_ver_compat_for_input_str(param.get('ip_hostname', config.get('endpoint')))
+        else:
+            endpoint = self._handle_py_ver_compat_for_input_str(config.get('endpoint'))
         if endpoint is None:
             return action_result.set_status(
                 phantom.APP_ERROR, "No Endpoint Configured"
@@ -258,16 +245,12 @@ class WindowsRemoteManagementConnector(BaseConnector):
             endpoint = '{0}://{1}'.format(default_protocol, endpoint)
         if re.search(r':\d+$', endpoint, re.UNICODE | re.IGNORECASE) is None:
             endpoint = '{0}:{1}'.format(endpoint, default_port)
-        username = config[consts.WINRM_CONFIG_USERNAME]
-        password = config[consts.WINRM_CONFIG_PASSWORD]
-        transport = config.get(consts.WINRM_CONFIG_TRANSPORT)
-        domain = self._handle_py_ver_compat_for_input_str(config.get(consts.WINRM_CONFIG_DOMAIN))
+        username = config['username']
+        password = config['password']
+        transport = config.get('transport')
+        domain = self._handle_py_ver_compat_for_input_str(config.get('domain'))
 
         verify_bool = config.get(phantom.APP_JSON_VERIFY, False)
-        cert_pem_path = None
-        cert_key_pem_path = None
-        cert_ca_trust_path = config.get(consts.WINRM_CONFIG_CA_TRUST, "legacy_requests")
-
         if verify_bool:
             verify = 'validate'
         else:
@@ -279,18 +262,12 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     "Warning: Domain is set but transport type is set to 'basic'"
                 )
         elif transport == 'ntlm':
-            if self._get_fips_enabled():
-                return action_result.set_status(
-                    phantom.APP_ERROR, "This transport type is not supported when FIPS is enabled"
-                )
             if domain:
                 username = r'{}\{}'.format(domain, username)
         elif transport == 'kerberos':
-            username = r'{}\{}'.format(domain, username)
-        elif transport == 'certificate':
-            username = r'{}\{}'.format(domain, username)
-            cert_pem_path = config.get(consts.WINRM_CONFIG_CERT_PEM)
-            cert_key_pem_path = config.get(consts.WINRM_CONFIG_CERT_KEY_PEM)
+            return action_result.set_status(
+                phantom.APP_ERROR, "This transport type is not yet implemented"
+            )
         elif transport == 'credssp':
             return action_result.set_status(
                 phantom.APP_ERROR, "This transport type is not yet implemented"
@@ -304,10 +281,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             endpoint,
             auth=(username, password),
             server_cert_validation=verify,
-            transport=transport,
-            cert_pem=cert_pem_path,
-            cert_key_pem=cert_key_pem_path,
-            ca_trust_path=cert_ca_trust_path
+            transport=transport
         )
         self._protocol = self._session.protocol
 

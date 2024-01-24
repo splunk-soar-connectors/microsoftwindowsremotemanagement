@@ -1,6 +1,6 @@
 # File: winrm_consts.py
 #
-# Copyright (c) 2018-2023 Splunk Inc.
+# Copyright (c) 2018-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,16 +108,3 @@ ACTION_VALUE_LIST = ["allow", "block", "bypass"]
 LOCATION_VALUE_LIST = ["local", "domain", "effective"]
 DENY_ALLOW_VALUE_LIST = ["deny", "allow"]
 VALUE_LIST_VALIDATION_MESSAGE = "Please provide valid input from {} in '{}' action parameter"
-
-# Config keys
-
-WINRM_CONFIG_ENDPOINT = "endpoint"
-WINRM_CONFIG_PROTOCOL = "default_protocol"
-WINRM_CONFIG_PORT = "default_port"
-WINRM_CONFIG_USERNAME = "username"
-WINRM_CONFIG_PASSWORD = "password"
-WINRM_CONFIG_TRANSPORT = "transport"
-WINRM_CONFIG_DOMAIN = "domain"
-WINRM_CONFIG_CERT_PEM = "cert_pem_path"
-WINRM_CONFIG_CERT_KEY_PEM = "cert_key_pem_path"
-WINRM_CONFIG_CA_TRUST = "ca_trust_path"
