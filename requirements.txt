@@ -1,3 +1,7 @@
 beautifulsoup4==4.9.1
 pywinrm==0.4.3
+# Pinned to the current platform version
+requests==2.31.0
+# Needed to avoid incompatibility with platform packages caused by urllib3 >= 2.0.0
+urllib3==1.26.18
 xmltodict==0.13.0
