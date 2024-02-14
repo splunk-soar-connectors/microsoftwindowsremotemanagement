@@ -2,7 +2,7 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.2.7  
+Connector Version: 2.2.8  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
