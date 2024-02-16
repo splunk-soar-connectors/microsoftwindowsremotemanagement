@@ -1,1 +1,2 @@
 **Unreleased**
+* Updated cryptography and pegged urllib3 version
