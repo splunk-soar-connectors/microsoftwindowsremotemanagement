@@ -1,9 +1,10 @@
 repos:
 -   repo: https://github.com/phantomcyber/dev-cicd-tools
-    rev: v1.16
+    rev: v1.17
     hooks:
     -   id: org-hook
     -   id: package-app-dependencies
+        args: ["-d", "./Dockerfile.wheels"]
 -   repo: https://github.com/Yelp/detect-secrets
     rev: v1.4.0
     hooks:
