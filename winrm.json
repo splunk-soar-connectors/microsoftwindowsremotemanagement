@@ -9,9 +9,9 @@
     "product_name": "Windows Remote Management",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2018-2023 Splunk Inc.",
-    "app_version": "2.2.6",
-    "utctime_updated": "2023-12-05T12:42:47.000000Z",
+    "license": "Copyright (c) 2018-2024 Splunk Inc.",
+    "app_version": "2.2.9",
+    "utctime_updated": "2024-02-16T10:23:24.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
     "min_phantom_version": "6.1.1",
@@ -3309,23 +3309,23 @@
             },
             {
                 "module": "certifi",
-                "input_file": "wheels/py3/certifi-2023.7.22-py3-none-any.whl"
+                "input_file": "wheels/py3/certifi-2024.2.2-py3-none-any.whl"
             },
             {
                 "module": "cffi",
-                "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
             },
             {
                 "module": "charset_normalizer",
-                "input_file": "wheels/py39/charset_normalizer-3.3.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py39/charset_normalizer-3.3.2-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py3/cryptography-41.0.5-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py39/cryptography-42.0.2-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/py3/idna-3.4-py3-none-any.whl"
+                "input_file": "wheels/py3/idna-3.6-py3-none-any.whl"
             },
             {
                 "module": "pycparser",
@@ -3338,6 +3338,10 @@
             {
                 "module": "pywinrm",
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
             },
             {
                 "module": "requests_ntlm",
@@ -3353,7 +3357,7 @@
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/py3/urllib3-2.0.7-py3-none-any.whl"
+                "input_file": "wheels/shared/urllib3-1.26.18-py2.py3-none-any.whl"
             },
             {
                 "module": "xmltodict",
