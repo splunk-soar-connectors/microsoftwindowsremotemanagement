@@ -1,18 +1,18 @@
 {
-    "appid": "024da1a3-b64f-4974-b841-051b4d3c993d",
-    "name": "Cyber Windows Remote Management",
+    "appid": "a0222b95-b006-4c9e-9578-1428defcec0f",
+    "name": "Windows Remote Management",
     "description": "This app integrates with the Windows Remote Management service to execute various actions",
     "type": "endpoint",
-    "product_vendor": "Microsoft_clone_1702059179715",
+    "product_vendor": "Microsoft",
     "logo": "logo_microsoft.svg",
     "logo_dark": "logo_microsoft_dark.svg",
-    "product_name": "Windows Remote Management_clone_1702059179715",
+    "product_name": "Windows Remote Management",
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2018-2023 Splunk Inc.",
-    "app_version": "1.0.0",
-    "utctime_updated": "2023-12-08T18:13:44.087303Z",
-    "package_name": "phantom_cyberwindowsremotemanagement",
+    "app_version": "2.2.6",
+    "utctime_updated": "2023-12-05T12:42:47.000000Z",
+    "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
     "min_phantom_version": "6.1.1",
     "fips_compliant": true,
@@ -25,17 +25,13 @@
         "endpoint": {
             "description": "IP/Hostname (For TEST CONNECTIVITY and default, if not provided in an action)",
             "data_type": "string",
-            "order": 0,
-            "name": "endpoint",
-            "id": 0
+            "order": 0
         },
         "verify_server_cert": {
             "description": "Verify Server Certificate",
             "data_type": "boolean",
-            "default": "False",
-            "order": 1,
-            "name": "verify_server_cert",
-            "id": 1
+            "default": false,
+            "order": 1
         },
         "default_protocol": {
             "description": "Default protocol for actions",
@@ -45,40 +41,30 @@
             "value_list": [
                 "http",
                 "https"
-            ],
-            "name": "default_protocol",
-            "id": 2
+            ]
         },
         "default_port": {
             "description": "Default port for actions",
             "data_type": "numeric",
             "default": 5985,
-            "order": 3,
-            "name": "default_port",
-            "id": 3
+            "order": 3
         },
         "domain": {
             "description": "Domain",
             "data_type": "string",
-            "order": 4,
-            "name": "domain",
-            "id": 4
+            "order": 4
         },
         "username": {
             "description": "Username",
             "data_type": "string",
             "required": true,
-            "order": 5,
-            "name": "username",
-            "id": 5
+            "order": 5
         },
         "password": {
             "description": "Password",
             "data_type": "password",
             "required": true,
-            "order": 6,
-            "name": "password",
-            "id": 6
+            "order": 6
         },
         "transport": {
             "description": "Type of transport to use",
@@ -89,9 +75,7 @@
                 "ntlm"
             ],
             "default": "basic",
-            "order": 7,
-            "name": "transport",
-            "id": 7
+            "order": 7
         }
     },
     "actions": [
@@ -116,14 +100,12 @@
                 "command": {
                     "description": "The command to be run",
                     "data_type": "string",
-                    "order": 1,
-                    "name": "command"
+                    "order": 1
                 },
                 "arguments": {
                     "description": "The arguments for the command",
                     "data_type": "string",
-                    "order": 2,
-                    "name": "arguments"
+                    "order": 2
                 },
                 "parser": {
                     "description": "The vault ID of a custom parser to use for output",
@@ -132,8 +114,7 @@
                     ],
                     "primary": true,
                     "data_type": "string",
-                    "order": 3,
-                    "name": "parser"
+                    "order": 3
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -143,15 +124,13 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "async": {
                     "description": "Start the command, but don't wait for output",
                     "data_type": "boolean",
                     "default": false,
-                    "order": 4,
-                    "name": "async"
+                    "order": 4
                 },
                 "command_id": {
                     "description": "Command ID of async command (Provide with shell_id)",
@@ -160,8 +139,7 @@
                     "order": 5,
                     "contains": [
                         "winrm command id"
-                    ],
-                    "name": "command_id"
+                    ]
                 },
                 "shell_id": {
                     "description": "Shell ID of async command (Provide with command_id)",
@@ -170,8 +148,7 @@
                     "contains": [
                         "winrm shell id"
                     ],
-                    "primary": true,
-                    "name": "shell_id"
+                    "primary": true
                 }
             },
             "output": [
@@ -336,14 +313,12 @@
                     ],
                     "data_type": "string",
                     "primary": true,
-                    "order": 1,
-                    "name": "script_file"
+                    "order": 1
                 },
                 "script_str": {
                     "description": "A PowerShell script to run",
                     "data_type": "string",
-                    "order": 2,
-                    "name": "script_str"
+                    "order": 2
                 },
                 "parser": {
                     "description": "The vault ID of a custom parser to use for output",
@@ -352,8 +327,7 @@
                     ],
                     "data_type": "string",
                     "primary": true,
-                    "order": 3,
-                    "name": "parser"
+                    "order": 3
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -363,15 +337,13 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "async": {
                     "description": "Start the command, but don't wait for output",
                     "data_type": "boolean",
                     "default": false,
-                    "order": 4,
-                    "name": "async"
+                    "order": 4
                 },
                 "command_id": {
                     "description": "Command ID of async command (Provide with shell_id)",
@@ -380,8 +352,7 @@
                     "primary": true,
                     "contains": [
                         "winrm command id"
-                    ],
-                    "name": "command_id"
+                    ]
                 },
                 "shell_id": {
                     "description": "Shell ID of async command (Provide with command_id)",
@@ -390,8 +361,7 @@
                     "contains": [
                         "winrm shell id"
                     ],
-                    "primary": true,
-                    "name": "shell_id"
+                    "primary": true
                 }
             },
             "output": [
@@ -559,8 +529,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -714,8 +683,7 @@
                     "contains": [
                         "pid"
                     ],
-                    "order": 1,
-                    "name": "pid"
+                    "order": 1
                 },
                 "name": {
                     "description": "Name of program to terminate, accepts wildcards",
@@ -724,8 +692,7 @@
                     "contains": [
                         "process name"
                     ],
-                    "order": 2,
-                    "name": "name"
+                    "order": 2
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -735,8 +702,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -832,8 +798,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -986,8 +951,7 @@
                     "contains": [
                         "port"
                     ],
-                    "order": 1,
-                    "name": "filter_port"
+                    "order": 1
                 },
                 "filter_ip": {
                     "description": "Only show firewall rules acting on this ip",
@@ -996,8 +960,7 @@
                     "contains": [
                         "ip"
                     ],
-                    "order": 2,
-                    "name": "filter_ip"
+                    "order": 2
                 },
                 "direction": {
                     "description": "Only show firewall rules in this direction",
@@ -1006,8 +969,7 @@
                         "in",
                         "out"
                     ],
-                    "order": 3,
-                    "name": "direction"
+                    "order": 3
                 },
                 "protocol": {
                     "description": "Only show firewall rules using this protocol",
@@ -1016,14 +978,12 @@
                         "winrm protocol"
                     ],
                     "order": 4,
-                    "primary": true,
-                    "name": "protocol"
+                    "primary": true
                 },
                 "other": {
                     "description": "JSON object of key value pairs of other fields to match",
                     "data_type": "string",
-                    "order": 5,
-                    "name": "other"
+                    "order": 5
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -1033,8 +993,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -1270,8 +1229,7 @@
                     ],
                     "primary": true,
                     "required": true,
-                    "order": 1,
-                    "name": "name"
+                    "order": 1
                 },
                 "dir": {
                     "description": "Blocks inbound or outbound traffic",
@@ -1280,8 +1238,7 @@
                         "in",
                         "out"
                     ],
-                    "order": 2,
-                    "name": "dir"
+                    "order": 2
                 },
                 "remote_ip": {
                     "description": "Firewall rule acts on this remote IP",
@@ -1290,8 +1247,7 @@
                         "ip"
                     ],
                     "order": 3,
-                    "primary": true,
-                    "name": "remote_ip"
+                    "primary": true
                 },
                 "local_ip": {
                     "description": "Firewall rule acts on this local IP",
@@ -1300,8 +1256,7 @@
                         "ip"
                     ],
                     "order": 4,
-                    "primary": true,
-                    "name": "local_ip"
+                    "primary": true
                 },
                 "remote_port": {
                     "description": "Firewall rule acts on this remote port",
@@ -1310,8 +1265,7 @@
                         "port"
                     ],
                     "order": 5,
-                    "primary": true,
-                    "name": "remote_port"
+                    "primary": true
                 },
                 "local_port": {
                     "description": "Firewall rule acts on this local port",
@@ -1320,8 +1274,7 @@
                         "port"
                     ],
                     "order": 6,
-                    "primary": true,
-                    "name": "local_port"
+                    "primary": true
                 },
                 "protocol": {
                     "description": "Firewall rule acts on this protocol",
@@ -1330,14 +1283,12 @@
                         "winrm protocol"
                     ],
                     "order": 7,
-                    "primary": true,
-                    "name": "protocol"
+                    "primary": true
                 },
                 "other": {
                     "description": "JSON object of key value pairs for other parameters to include",
                     "data_type": "string",
-                    "order": 8,
-                    "name": "other"
+                    "order": 8
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -1347,8 +1298,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -1507,8 +1457,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "name": {
                     "description": "The name of the rule to add",
@@ -1518,8 +1467,7 @@
                         "windows firewall rule name"
                     ],
                     "order": 1,
-                    "primary": true,
-                    "name": "name"
+                    "primary": true
                 },
                 "remote_ip": {
                     "description": "Block this IP",
@@ -1529,8 +1477,7 @@
                     "contains": [
                         "ip"
                     ],
-                    "order": 2,
-                    "name": "remote_ip"
+                    "order": 2
                 }
             },
             "output": [
@@ -1627,8 +1574,7 @@
                         "windows firewall rule name"
                     ],
                     "order": 1,
-                    "primary": true,
-                    "name": "name"
+                    "primary": true
                 },
                 "dir": {
                     "description": "Block inbound or outbound traffic",
@@ -1638,8 +1584,7 @@
                         "in",
                         "out"
                     ],
-                    "order": 2,
-                    "name": "dir"
+                    "order": 2
                 },
                 "action": {
                     "description": "What the firewall will do with packets",
@@ -1650,8 +1595,7 @@
                         "block",
                         "bypass"
                     ],
-                    "order": 3,
-                    "name": "action"
+                    "order": 3
                 },
                 "remote_ip": {
                     "description": "Firewall rule acts on this remote IP",
@@ -1660,8 +1604,7 @@
                     "contains": [
                         "ip"
                     ],
-                    "order": 4,
-                    "name": "remote_ip"
+                    "order": 4
                 },
                 "local_ip": {
                     "description": "Firewall rule acts on this local IP",
@@ -1670,8 +1613,7 @@
                     "contains": [
                         "ip"
                     ],
-                    "order": 5,
-                    "name": "local_ip"
+                    "order": 5
                 },
                 "remote_port": {
                     "description": "Firewall rule acts on this remote port",
@@ -1680,8 +1622,7 @@
                         "port"
                     ],
                     "primary": true,
-                    "order": 6,
-                    "name": "remote_port"
+                    "order": 6
                 },
                 "local_port": {
                     "description": "Firewall rule acts on this local port",
@@ -1690,8 +1631,7 @@
                         "port"
                     ],
                     "order": 7,
-                    "primary": true,
-                    "name": "local_port"
+                    "primary": true
                 },
                 "protocol": {
                     "description": "Firewall rule acts on this protocol",
@@ -1700,14 +1640,12 @@
                         "winrm protocol"
                     ],
                     "order": 8,
-                    "primary": true,
-                    "name": "protocol"
+                    "primary": true
                 },
                 "other": {
                     "description": "JSON object of key value pairs for other parameters to include",
                     "data_type": "string",
-                    "order": 9,
-                    "name": "other"
+                    "order": 9
                 },
                 "ip_hostname": {
                     "description": "IP/Hostname",
@@ -1717,8 +1655,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -1877,8 +1814,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "session_id": {
                     "description": "Session ID",
@@ -1888,8 +1824,7 @@
                     "order": 1,
                     "contains": [
                         "windows session id"
-                    ],
-                    "name": "session_id"
+                    ]
                 }
             },
             "output": [
@@ -1975,8 +1910,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -2096,8 +2030,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -2173,8 +2106,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 }
             },
             "output": [
@@ -2250,14 +2182,12 @@
                     "contains": [
                         "ip",
                         "host name"
-                    ],
-                    "name": "ip_hostname"
+                    ]
                 },
                 "comment": {
                     "description": "Comment to show to users",
                     "data_type": "string",
-                    "order": 1,
-                    "name": "comment"
+                    "order": 1
                 }
             },
             "output": [
@@ -2340,14 +2270,12 @@
                     "contains": [
                         "ip",
                         "host name"
-                    ],
-                    "name": "ip_hostname"
+                    ]
                 },
                 "comment": {
                     "description": "Comment to show to users",
                     "data_type": "string",
-                    "order": 1,
-                    "name": "comment"
+                    "order": 1
                 }
             },
             "output": [
@@ -2430,8 +2358,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "location": {
                     "description": "Which policies to list",
@@ -2442,14 +2369,12 @@
                         "local",
                         "domain",
                         "effective"
-                    ],
-                    "name": "location"
+                    ]
                 },
                 "ldap": {
                     "description": "LDAP Server. Will only have an effect if 'location' is set to 'domain'",
                     "data_type": "string",
-                    "order": 2,
-                    "name": "ldap"
+                    "order": 2
                 }
             },
             "output": [
@@ -2651,8 +2576,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "deny_allow": {
                     "description": "Set this rule to allow or deny",
@@ -2662,8 +2586,7 @@
                     "value_list": [
                         "deny",
                         "allow"
-                    ],
-                    "name": "deny_allow"
+                    ]
                 },
                 "file_path": {
                     "description": "File path to set rule to. Allows wildcards (i.e. C:\\Windows\\System32\\*.exe)",
@@ -2673,8 +2596,7 @@
                     "order": 2,
                     "contains": [
                         "file path"
-                    ],
-                    "name": "file_path"
+                    ]
                 },
                 "user": {
                     "description": "User or group to apply rule to",
@@ -2683,20 +2605,17 @@
                     "contains": [
                         "winrm user or group sid"
                     ],
-                    "primary": true,
-                    "name": "user"
+                    "primary": true
                 },
                 "rule_name_prefix": {
                     "description": "Prefix for new rule name",
                     "data_type": "string",
-                    "order": 4,
-                    "name": "rule_name_prefix"
+                    "order": 4
                 },
                 "ldap": {
                     "description": "LDAP Server",
                     "data_type": "string",
-                    "order": 5,
-                    "name": "ldap"
+                    "order": 5
                 }
             },
             "output": [
@@ -2814,8 +2733,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "applocker_policy_id": {
                     "description": "ID of policy to delete",
@@ -2825,14 +2743,12 @@
                     "order": 1,
                     "contains": [
                         "windows applocker policy id"
-                    ],
-                    "name": "applocker_policy_id"
+                    ]
                 },
                 "ldap": {
                     "description": "LDAP Server",
                     "data_type": "string",
-                    "order": 2,
-                    "name": "ldap"
+                    "order": 2
                 }
             },
             "output": [
@@ -2925,8 +2841,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "file_path": {
                     "description": "Path to file",
@@ -2936,8 +2851,7 @@
                     "primary": true,
                     "contains": [
                         "file path"
-                    ],
-                    "name": "file_path"
+                    ]
                 }
             },
             "output": [
@@ -3039,8 +2953,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "vault_id": {
                     "description": "Vault ID of file",
@@ -3050,8 +2963,7 @@
                     "primary": true,
                     "contains": [
                         "vault id"
-                    ],
-                    "name": "vault_id"
+                    ]
                 },
                 "destination": {
                     "description": "Path to copy file to",
@@ -3061,8 +2973,7 @@
                     "contains": [
                         "file path"
                     ],
-                    "primary": true,
-                    "name": "destination"
+                    "primary": true
                 }
             },
             "output": [
@@ -3165,8 +3076,7 @@
                         "ip",
                         "host name"
                     ],
-                    "primary": true,
-                    "name": "ip_hostname"
+                    "primary": true
                 },
                 "from": {
                     "description": "File source (path)",
@@ -3176,8 +3086,7 @@
                     "order": 1,
                     "contains": [
                         "file path"
-                    ],
-                    "name": "from"
+                    ]
                 },
                 "to": {
                     "description": "File destination (path)",
@@ -3187,8 +3096,7 @@
                     "contains": [
                         "file path"
                     ],
-                    "primary": true,
-                    "name": "to"
+                    "primary": true
                 }
             },
             "output": [
@@ -3277,119 +3185,114 @@
         },
         {
             "action": "delete file",
-            "identifier": "delete_file",
             "description": "Run the delete command on the Windows Endpoint",
             "verbose": "For best results, the <b>file path</b> parameter should be an absolute path to a location.",
             "type": "generic",
+            "identifier": "delete_file",
             "read_only": false,
             "parameters": {
                 "ip_hostname": {
                     "description": "IP/Hostname",
                     "data_type": "string",
-                    "required": false,
-                    "primary": true,
+                    "order": 0,
                     "contains": [
                         "ip",
                         "host name"
                     ],
-                    "value_list": [],
-                    "default": "",
-                    "order": 0,
-                    "name": "ip_hostname",
-                    "id": 1,
-                    "param_name": "ip_hostname"
+                    "primary": true
                 },
                 "file_path": {
-                    "description": "Path to file / directory",
+                    "description": "Path to file",
                     "data_type": "string",
                     "required": true,
+                    "order": 1,
                     "primary": true,
                     "contains": [
                         "file path"
-                    ],
-                    "value_list": [],
-                    "default": "",
-                    "order": 1,
-                    "name": "file_path",
-                    "id": 2,
-                    "param_name": "file_path"
+                    ]
                 },
                 "force": {
                     "description": "Use the force flag for delete",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
-                    "contains": [],
                     "default": false,
-                    "order": 2,
-                    "name": "force",
-                    "id": 3,
-                    "param_name": "force"
-                },
-                "recurse": {
-                    "description": "Use the recurse flag to delete directory content recursively",
-                    "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
-                    "contains": [],
-                    "default": "",
-                    "order": 3,
-                    "name": "recurse",
-                    "id": 4,
-                    "param_name": "recurse"
+                    "order": 2
                 }
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.ip_hostname",
-                    "data_type": "string",
-                    "contains": [
-                        "ip",
-                        "host name"
-                    ],
-                    "column_name": "ip_hostname",
-                    "column_order": 0
-                },
-                {
                     "data_path": "action_result.parameter.file_path",
                     "data_type": "string",
+                    "example_values": [
+                        "C:\\Windows\\System32\\notepad.exe"
+                    ],
                     "contains": [
                         "file path"
                     ],
-                    "column_name": "file_path",
-                    "column_order": 1
+                    "column_name": "File Path",
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.parameter.force",
                     "data_type": "boolean",
-                    "contains": [],
-                    "column_name": "force",
-                    "column_order": 2
+                    "example_values": [
+                        true,
+                        false
+                    ],
+                    "column_name": "Force",
+                    "column_order": 1
                 },
                 {
-                    "data_path": "action_result.parameter.recurse",
-                    "data_type": "boolean",
-                    "contains": [],
-                    "column_name": "recurse",
+                    "data_path": "action_result.parameter.ip_hostname",
+                    "data_type": "string",
+                    "example_values": [
+                        "8.8.8.8",
+                        "8.8.8.8\\testphantom.local"
+                    ],
+                    "contains": [
+                        "ip",
+                        "host name"
+                    ],
+                    "column_name": "IP/HOSTNAME",
                     "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "status",
-                    "column_order": 4
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Successfully deleted files"
+                    ],
+                    "column_name": "Message",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.summary",
                     "data_type": "string"
                 },
                 {
                     "data_path": "summary.total_objects",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 }
             ],
             "render": {
@@ -3457,13 +3360,5 @@
                 "input_file": "wheels/shared/xmltodict-0.13.0-py2.py3-none-any.whl"
             }
         ]
-    },
-    "copied_from_id": 19,
-    "copied_from_version": "2.2.6",
-    "directory": "cyberwindowsremotemanagement_024da1a3-b64f-4974-b841-051b4d3c993d",
-    "version": 1,
-    "appname": "-",
-    "executable": "spawn3",
-    "disabled": false,
-    "custom_made": true
+    }
 }
