@@ -133,11 +133,14 @@ It is recommended that these files be placed under the <PHANTOM_HOME>/etc/ssl/ d
 ### Kerberos Authentication
 
 To authenticate using Kerberos, select `kerberos` authentication in asset configuration and provide hostname and username used for authorization.
-You'll also need to setup your Phantom VM to support Kerberos:
+You'll also need to setup your instance to support Kerberos:
 
--  Kerberos packages needs to be installed: `krb5-workstation krb5-libs krb5-auth-dialog`
+-  Kerberos packages have to be installed:
+    - for Debian/Ubuntu/etc: `sudo apt-get install krb5-user`
+    - for RHEL/CentOS/etc: `sudo yum install krb5-workstation krb5-libs krb5-auth-dialog`
+
 -  `/etc/krb5.conf` needs to be properly configured for your realm and kdc
--  If there is no DNS configuration, `hosts` file will need to have mappings for Windows server under same domain as on Windows server 
+-  If there is no DNS configuration, `hosts` file will need to have mappings for server with mssccm under same domain as on Windows server 
 -  `kinit` must be run for principal that will be used to connect to msccm
 -   It should be noted that Kerberos tickets will expire, so it is recommended to use a script to
     run `kinit` periodically to refresh the ticket for the user, alternatively `keytab` file can be created on server and used on client for connectivity.
