@@ -287,7 +287,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 username = r'{}\{}'.format(domain, username)
         elif transport == 'kerberos':
             if domain:
-                username = r'{}@{}'.format(username, domain)
+                username = '{}@{}'.format(username, domain)
         elif transport == 'certificate':
             username = r'{}\{}'.format(domain, username)
             cert_pem_path = config.get(consts.WINRM_CONFIG_CERT_PEM)
