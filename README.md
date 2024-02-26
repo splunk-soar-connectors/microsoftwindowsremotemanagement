@@ -880,5 +880,5 @@ action_result.data | string |  |
 action_result.status | string |  |   success  failed 
 action_result.message | string |  |   Successfully deleted files 
 action_result.summary | string |  |  
-eummary.total_objects | numeric |  |   1 
+summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 
