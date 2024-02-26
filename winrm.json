@@ -10,8 +10,8 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2018-2024 Splunk Inc.",
-    "app_version": "2.2.7",
-    "utctime_updated": "2023-12-05T12:42:47.000000Z",
+    "app_version": "2.2.9",
+    "utctime_updated": "2024-02-16T10:23:24.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
     "min_phantom_version": "6.1.1",
@@ -3333,7 +3333,7 @@
             },
             {
                 "module": "cffi",
-                "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
             },
             {
                 "module": "charset_normalizer",

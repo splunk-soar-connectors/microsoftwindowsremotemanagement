@@ -2,7 +2,7 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.2.7  
+Connector Version: 2.2.9  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
@@ -880,5 +880,5 @@ action_result.data | string |  |
 action_result.status | string |  |   success  failed 
 action_result.message | string |  |   Successfully deleted files 
 action_result.summary | string |  |  
-summary.total_objects | numeric |  |   1 
+eummary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 
