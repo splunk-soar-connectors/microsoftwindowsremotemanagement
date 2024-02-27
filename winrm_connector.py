@@ -194,10 +194,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return False
 
         fips_enabled = is_fips_enabled()
-        if fips_enabled:
-            self.debug_print('FIPS is enabled')
-        else:
-            self.debug_print('FIPS is not enabled')
+        self.debug_print(f'FIPS enabled: {fips_enabled}')
         return fips_enabled
 
     def _create_ps_script(self, action_result, args, whitelist_args=set(), cmd_prefix="", cmd_suffix=""):
