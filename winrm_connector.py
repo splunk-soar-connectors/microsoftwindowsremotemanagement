@@ -37,6 +37,7 @@ import winrm
 from bs4 import UnicodeDammit
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
+from phantom_common.install_info import is_fips_enabled
 
 # Local imports
 import parse_callbacks as pc
@@ -188,13 +189,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
         return string.replace('`', '``').replace('"', '`"').replace('$', '`$').replace('&', '`&').replace(')', '`)').replace('(', '`(')
 
     def _get_fips_enabled(self):
-        try:
-            from phantom_common.install_info import is_fips_enabled
-        except ImportError:
-            return False
-
         fips_enabled = is_fips_enabled()
-        self.debug_print(f'FIPS enabled: {fips_enabled}')
+        self.debug_print(f'FIPS is enabled: {fips_enabled}')
         return fips_enabled
 
     def _create_ps_script(self, action_result, args, whitelist_args=set(), cmd_prefix="", cmd_suffix=""):
