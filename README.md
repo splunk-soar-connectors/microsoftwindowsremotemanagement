@@ -2,7 +2,7 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.2.10  
+Connector Version: 2.3.0  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
@@ -149,7 +149,7 @@ You'll also need to setup your instance to support Kerberos:
 
 -  Kerberos packages have to be installed:
     - for Debian/Ubuntu/etc: `sudo apt-get install krb5-user`
-    - for RHEL/CentOS/etc: `sudo yum install krb5-workstation krb5-libs krb5-auth-dialog`
+    - for RHEL/CentOS/etc: `sudo yum install krb5-workstation krb5-libs`
 
 -  `/etc/krb5.conf` needs to be properly configured for your realm and kdc
 -  If there is no DNS configuration, `hosts` file will need to have mappings for server with mssccm under same domain as on Windows server 
