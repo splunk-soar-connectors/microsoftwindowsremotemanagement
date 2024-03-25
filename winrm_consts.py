@@ -1,6 +1,6 @@
 # File: winrm_consts.py
 #
-# Copyright (c) 2018-2023 Splunk Inc.
+# Copyright (c) 2018-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ WINRM_CONFIG_ENDPOINT = "endpoint"
 WINRM_CONFIG_PROTOCOL = "default_protocol"
 WINRM_CONFIG_PORT = "default_port"
 WINRM_CONFIG_USERNAME = "username"
-WINRM_CONFIG_PASSWORD = "password"
+WINRM_CONFIG_PASSWORD = "password"  # pragma: allowlist secret
 WINRM_CONFIG_TRANSPORT = "transport"
 WINRM_CONFIG_DOMAIN = "domain"
 WINRM_CONFIG_CERT_PEM = "cert_pem_path"
