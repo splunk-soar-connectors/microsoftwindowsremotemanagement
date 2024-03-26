@@ -14,7 +14,7 @@
     "utctime_updated": "2024-02-28T09:53:35.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.1.2",
     "fips_compliant": true,
     "python_version": "3",
     "latest_tested_versions": [
@@ -3328,24 +3328,8 @@
                 "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
             },
             {
-                "module": "certifi",
-                "input_file": "wheels/py3/certifi-2024.2.2-py3-none-any.whl"
-            },
-            {
                 "module": "cffi",
                 "input_file": "wheels/py39/cffi-1.16.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
-            },
-            {
-                "module": "charset_normalizer",
-                "input_file": "wheels/py39/charset_normalizer-3.3.2-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
-            },
-            {
-                "module": "cryptography",
-                "input_file": "wheels/py39/cryptography-42.0.4-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
-            },
-            {
-                "module": "idna",
-                "input_file": "wheels/py3/idna-3.6-py3-none-any.whl"
             },
             {
                 "module": "pycparser",
@@ -3364,10 +3348,6 @@
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/py3/requests-2.31.0-py3-none-any.whl"
-            },
-            {
                 "module": "requests_ntlm",
                 "input_file": "wheels/py3/requests_ntlm-1.2.0-py3-none-any.whl"
             },
@@ -3378,10 +3358,6 @@
             {
                 "module": "soupsieve",
                 "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
-            },
-            {
-                "module": "urllib3",
-                "input_file": "wheels/py3/urllib3-2.2.1-py3-none-any.whl"
             },
             {
                 "module": "xmltodict",
@@ -3396,24 +3372,8 @@
                 "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
             },
             {
-                "module": "certifi",
-                "input_file": "wheels/py3/certifi-2024.2.2-py3-none-any.whl"
-            },
-            {
                 "module": "cffi",
                 "input_file": "wheels/py36/cffi-1.15.1-cp36-cp36m-manylinux1_x86_64.manylinux_2_5_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
-            },
-            {
-                "module": "charset_normalizer",
-                "input_file": "wheels/py3/charset_normalizer-2.0.12-py3-none-any.whl"
-            },
-            {
-                "module": "cryptography",
-                "input_file": "wheels/py36/cryptography-40.0.2-cp36-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
-            },
-            {
-                "module": "idna",
-                "input_file": "wheels/py3/idna-3.6-py3-none-any.whl"
             },
             {
                 "module": "ntlm_auth",
@@ -3432,10 +3392,6 @@
                 "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
             },
             {
-                "module": "requests",
-                "input_file": "wheels/shared/requests-2.27.1-py2.py3-none-any.whl"
-            },
-            {
                 "module": "requests_ntlm",
                 "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
             },
@@ -3446,10 +3402,6 @@
             {
                 "module": "soupsieve",
                 "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
-            },
-            {
-                "module": "urllib3",
-                "input_file": "wheels/shared/urllib3-1.26.18-py2.py3-none-any.whl"
             },
             {
                 "module": "xmltodict",
