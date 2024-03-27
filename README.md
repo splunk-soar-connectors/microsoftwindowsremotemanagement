@@ -2,11 +2,11 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.3.0  
+Connector Version: 2.3.1  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.1.2  
+Minimum Product Version: 6.1.1  
 
 This app integrates with the Windows Remote Management service to execute various actions
 
