@@ -1,2 +1,1 @@
 **Unreleased**
-* Removed certifi, requests, cryptography and urlib3 dependencies in order to use platform packages [PAPP-31096, PAPP-30822, PAPP-31088, PAPP-33451]
