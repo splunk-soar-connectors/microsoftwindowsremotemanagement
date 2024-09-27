@@ -207,9 +207,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # "For your convenience" you can also pass it a list of strings and dicts, something like [val1, {"val2": "asdf"}, foo],
         #   which will generate a string like "-val1 -val2 asdf -foo".
         # Perhaps the name is a bit misleading, but this really only for creating one line of a script
-        if type(args) == dict:
+        if isinstance(args, dict):
             args = [args]
-        if type(args) != list:
+        if not isinstance(args, list):
             raise TypeError("Args Must be of type list or dict")
         arg_str = ""
         for arg in args:
