@@ -3320,5 +3320,69 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "cffi",
+                "input_file": "wheels/py36/cffi-1.15.1-cp36-cp36m-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py36/cryptography-40.0.2-cp36-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "ntlm_auth",
+                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pycparser",
+                "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
+            },
+            {
+                "module": "pykerberos",
+                "input_file": "wheels/py36/pykerberos-1.2.4-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "pywinrm",
+                "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests_ntlm",
+                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "cffi",
+                "input_file": "wheels/py39/cffi-1.17.1-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "cryptography",
+                "input_file": "wheels/py39/cryptography-43.0.1-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+            },
+            {
+                "module": "pycparser",
+                "input_file": "wheels/py3/pycparser-2.22-py3-none-any.whl"
+            },
+            {
+                "module": "pykerberos",
+                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "pyspnego",
+                "input_file": "wheels/py3/pyspnego-0.11.1-py3-none-any.whl"
+            },
+            {
+                "module": "pywinrm",
+                "input_file": "wheels/shared/pywinrm-0.4.3-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests_ntlm",
+                "input_file": "wheels/py3/requests_ntlm-1.3.0-py3-none-any.whl"
+            }
+        ]
+    }
 }

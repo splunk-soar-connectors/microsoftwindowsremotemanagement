@@ -16,7 +16,7 @@ APPLOCKER_BASE_SCRIPT = """
 Import-Module AppLocker
 """
 
-APPLOCKER_GET_POLICIES = 'Get-AppLockerPolicy -{0} {1}'
+APPLOCKER_GET_POLICIES = "Get-AppLockerPolicy -{0} {1}"
 
 APPLOCKER_CREATE_POLICY = """
 $Policy = Get-ChildItem "{0}" | Get-AppLockerFileInformation | New-AppLockerPolicy -RuleType Path,Hash {1}
@@ -91,15 +91,16 @@ WINRM_UNICODE_ERROR_MESSAGE = "Invalid unicode detected"
 
 # Constants relating to '_validate_integer'
 WINRM_ERROR_INVALID_INT = 'Please provide a valid {msg} integer value in the "{param}"'
-WINRM_ERROR_PARTITION = "Failed to fetch system volume, Please check the asset configuration and|or \"ip hostname\" parameter"
+WINRM_ERROR_PARTITION = 'Failed to fetch system volume, Please check the asset configuration and|or "ip hostname" parameter'
 WINRM_ERROR_INVALID_VAULT_ID = "Could not retrieve vault file"
 
 # Constants relating to '_get_error_message_from_exception'
 WINRM_ERROR_CODE_MESSAGE = "Error code unavailable"
 WINRM_ERROR_MESSAGE_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 WINRM_PARSE_ERROR_MESSAGE = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-WINRM_TYPE_ERROR_MESSAGE = ("Error occurred while connecting to the Winrm Server. "
-                            "Please check the asset configuration and|or the action parameters")
+WINRM_TYPE_ERROR_MESSAGE = (
+    "Error occurred while connecting to the Winrm Server. " "Please check the asset configuration and|or the action parameters"
+)
 
 # Constants relating to value_list check
 DIRECTION_VALUE_LIST = ["in", "out"]
