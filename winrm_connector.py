@@ -66,14 +66,14 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
         try:
             if input_str and (self._python_version == 2 or always_encode):
-                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+                input_str = UnicodeDammit(input_str).unicode_markup.encode("utf-8")
         except:
             self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
 
         return input_str
 
     def _get_error_message_from_exception(self, e):
-        """ This method is used to get appropriate error messages from the exception.
+        """This method is used to get appropriate error messages from the exception.
         :param e: Exception object
         :return: error message
         """
@@ -122,16 +122,17 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_INT.format(msg="", param=key)), None
 
             if parameter < 0:
-                return action_result.set_status(phantom.APP_ERROR,
-                                                consts.WINRM_ERROR_INVALID_INT.format(msg="non-negative", param=key)), None
+                return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_INT.format(msg="non-negative", param=key)), None
             if not allow_zero and parameter == 0:
-                return action_result.set_status(phantom.APP_ERROR,
-                                                consts.WINRM_ERROR_INVALID_INT.format(msg="non-zero positive", param=key)), None
+                return (
+                    action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_INT.format(msg="non-zero positive", param=key)),
+                    None,
+                )
 
         return phantom.APP_SUCCESS, parameter
 
     def is_ip(self, param):
-        if param in {'any', 'localsubnet', 'dns', 'dhcp', 'wins', 'defaultgateway'}:
+        if param in {"any", "localsubnet", "dns", "dhcp", "wins", "defaultgateway"}:
             return True
         try:
             ipaddress.ip_network(str(param))
@@ -147,16 +148,18 @@ class WindowsRemoteManagementConnector(BaseConnector):
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
-            file_path = list(file_info)[0].get('path')
+            file_path = list(file_info)[0].get("path")
         except:
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
-            with open(file_path, 'r') as fp:
+            with open(file_path, "r") as fp:
                 return phantom.APP_SUCCESS, fp.read()
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error reading vault file: {}".format(self._get_error_message_from_exception(e))), None
+            return (
+                action_result.set_status(phantom.APP_ERROR, "Error reading vault file: {}".format(self._get_error_message_from_exception(e))),
+                None,
+            )
 
     def _get_custom_parser_method(self, action_result, vault_id):
         if vault_id is None:
@@ -166,31 +169,37 @@ class WindowsRemoteManagementConnector(BaseConnector):
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
-            file_path = list(file_info)[0].get('path')
+            file_path = list(file_info)[0].get("path")
         except:
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
-            custom_parser = imp.load_source('custom_parser', file_path)
+            custom_parser = imp.load_source("custom_parser", file_path)
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error creating custom parser: {}".format(self._get_error_message_from_exception(e))), None
+            return (
+                action_result.set_status(
+                    phantom.APP_ERROR, "Error creating custom parser: {}".format(self._get_error_message_from_exception(e))
+                ),
+                None,
+            )
 
         try:
             return phantom.APP_SUCCESS, custom_parser.custom_parser  # noqa
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error saving custom parser: {}".format(self._get_error_message_from_exception(e))), None
+            return (
+                action_result.set_status(phantom.APP_ERROR, "Error saving custom parser: {}".format(self._get_error_message_from_exception(e))),
+                None,
+            )
 
     def _sanitize_string(self, string):
         # To avoid any shenanigans, we need to quote the arguments
         # The breaking character in PS is '`', so first we break any breaking characters, then we
         # break any double quotes which are found, then we break any $, which is used to declare variables
-        return string.replace('`', '``').replace('"', '`"').replace('$', '`$').replace('&', '`&').replace(')', '`)').replace('(', '`(')
+        return string.replace("`", "``").replace('"', '`"').replace("$", "`$").replace("&", "`&").replace(")", "`)").replace("(", "`(")
 
     def _get_fips_enabled(self):
         fips_enabled = is_fips_enabled()
-        self.debug_print(f'FIPS is enabled: {fips_enabled}')
+        self.debug_print(f"FIPS is enabled: {fips_enabled}")
         return fips_enabled
 
     def _create_ps_script(self, action_result, args, whitelist_args=set(), cmd_prefix="", cmd_suffix=""):
@@ -198,59 +207,50 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # "For your convenience" you can also pass it a list of strings and dicts, something like [val1, {"val2": "asdf"}, foo],
         #   which will generate a string like "-val1 -val2 asdf -foo".
         # Perhaps the name is a bit misleading, but this really only for creating one line of a script
-        if type(args) == dict:
+        if isinstance(args, dict):
             args = [args]
-        if type(args) != list:
+        if not isinstance(args, list):
             raise TypeError("Args Must be of type list or dict")
         arg_str = ""
         for arg in args:
             if type(arg) is dict:
                 for k, v in six.iteritems(arg):
                     if (whitelist_args and k not in whitelist_args) or not k.isalpha():
-                        return RetVal(action_result.set_status(
-                            phantom.APP_ERROR, "Invalid argument: {}".format(k)
-                        ), None)
+                        return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid argument: {}".format(k)), None)
                     if v is None:
                         continue
                     if type(v) is bool:
                         arg_str = "{0}-{1} ${2} ".format(arg_str, k, str(v))
                     elif type(v) is int:
-                        arg_str = "{0}-{1} \"{2}\" ".format(arg_str, k, str(v))
+                        arg_str = '{0}-{1} "{2}" '.format(arg_str, k, str(v))
                     else:
-                        arg_str = "{0}-{1} \"{2}\" ".format(arg_str, k, self._sanitize_string(
-                            self._handle_py_ver_compat_for_input_str(v)))
+                        arg_str = '{0}-{1} "{2}" '.format(arg_str, k, self._sanitize_string(self._handle_py_ver_compat_for_input_str(v)))
             if type(arg) is str:
                 if (whitelist_args and arg not in whitelist_args) or not arg.isalpha():
-                    return RetVal(action_result.set_status(
-                        phantom.APP_ERROR, "Invalid argument: {}".format(k)
-                    ), None)
+                    return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid argument: {}".format(k)), None)
                 arg_str = "{0}-{1} ".format(arg_str, arg)
         return RetVal(phantom.APP_SUCCESS, "{0} {1} {2}".format(cmd_prefix, arg_str, cmd_suffix))
 
     def _init_session(self, action_result, param=None):
         config = self.get_config()
 
-        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, 'http')
+        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, "http")
         ret_val, default_port = self._validate_integer(
-            action_result,
-            config.get(consts.WINRM_CONFIG_PORT, 5985 if default_protocol == 'http' else 5986),
-            "Default port",
-            True)
+            action_result, config.get(consts.WINRM_CONFIG_PORT, 5985 if default_protocol == "http" else 5986), "Default port", True
+        )
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         endpoint = self._handle_py_ver_compat_for_input_str(config.get(consts.WINRM_CONFIG_ENDPOINT))
         if param:
-            endpoint = self._handle_py_ver_compat_for_input_str(param.get('ip_hostname', endpoint))
+            endpoint = self._handle_py_ver_compat_for_input_str(param.get("ip_hostname", endpoint))
 
         if endpoint is None:
-            return action_result.set_status(
-                phantom.APP_ERROR, "No Endpoint Configured"
-            )
-        if re.search(r'^[a-z]+://', endpoint, re.UNICODE | re.IGNORECASE) is None:
-            endpoint = '{0}://{1}'.format(default_protocol, endpoint)
-        if re.search(r':\d+$', endpoint, re.UNICODE | re.IGNORECASE) is None:
-            endpoint = '{0}:{1}'.format(endpoint, default_port)
+            return action_result.set_status(phantom.APP_ERROR, "No Endpoint Configured")
+        if re.search(r"^[a-z]+://", endpoint, re.UNICODE | re.IGNORECASE) is None:
+            endpoint = "{0}://{1}".format(default_protocol, endpoint)
+        if re.search(r":\d+$", endpoint, re.UNICODE | re.IGNORECASE) is None:
+            endpoint = "{0}:{1}".format(endpoint, default_port)
         username = config[consts.WINRM_CONFIG_USERNAME]
         password = config[consts.WINRM_CONFIG_PASSWORD]
         transport = config.get(consts.WINRM_CONFIG_TRANSPORT)
@@ -262,37 +262,29 @@ class WindowsRemoteManagementConnector(BaseConnector):
         cert_ca_trust_path = config.get(consts.WINRM_CONFIG_CA_TRUST, "legacy_requests")
 
         if verify_bool:
-            verify = 'validate'
+            verify = "validate"
         else:
-            verify = 'ignore'
+            verify = "ignore"
 
-        if transport == 'basic' or transport == 'plaintext':
+        if transport == "basic" or transport == "plaintext":
             if domain:
-                self.save_progress(
-                    "Warning: Domain is set but transport type is set to 'basic'"
-                )
-        elif transport == 'ntlm':
+                self.save_progress("Warning: Domain is set but transport type is set to 'basic'")
+        elif transport == "ntlm":
             if self._get_fips_enabled():
-                return action_result.set_status(
-                    phantom.APP_ERROR, "This transport type is not supported when FIPS is enabled"
-                )
+                return action_result.set_status(phantom.APP_ERROR, "This transport type is not supported when FIPS is enabled")
             if domain:
-                username = r'{}\{}'.format(domain, username)
-        elif transport == 'kerberos':
+                username = r"{}\{}".format(domain, username)
+        elif transport == "kerberos":
             if domain:
-                username = '{}@{}'.format(username, domain)
-        elif transport == 'certificate':
-            username = r'{}\{}'.format(domain, username)
+                username = "{}@{}".format(username, domain)
+        elif transport == "certificate":
+            username = r"{}\{}".format(domain, username)
             cert_pem_path = config.get(consts.WINRM_CONFIG_CERT_PEM)
             cert_key_pem_path = config.get(consts.WINRM_CONFIG_CERT_KEY_PEM)
-        elif transport == 'credssp':
-            return action_result.set_status(
-                phantom.APP_ERROR, "This transport type is not yet implemented"
-            )
+        elif transport == "credssp":
+            return action_result.set_status(phantom.APP_ERROR, "This transport type is not yet implemented")
         else:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Invalid transport type: {}".format(transport)
-            )
+            return action_result.set_status(phantom.APP_ERROR, "Invalid transport type: {}".format(transport))
 
         self._session = winrm.Session(
             endpoint,
@@ -301,14 +293,15 @@ class WindowsRemoteManagementConnector(BaseConnector):
             transport=transport,
             cert_pem=cert_pem_path,
             cert_key_pem=cert_key_pem_path,
-            ca_trust_path=cert_ca_trust_path
+            ca_trust_path=cert_ca_trust_path,
         )
         self._protocol = self._session.protocol
 
         return phantom.APP_SUCCESS
 
-    def _run_cmd(self, action_result, cmd, args=None, parse_callback=pc.basic,
-                additional_data=None, async_=False, command_id=None, shell_id=None):
+    def _run_cmd(
+        self, action_result, cmd, args=None, parse_callback=pc.basic, additional_data=None, async_=False, command_id=None, shell_id=None
+    ):
         # The parser callback should have the function signature (ActionResult, winrm.Result) -> bool
         # The additional_data is a dictionary which will be passed to the parser, in which case the signature should be
         #  (ActionResult, winrm.Result, **kwargs) -> bool
@@ -326,23 +319,23 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 try:
                     resp = winrm.Response(self._protocol.get_command_output(shell_id, command_id))
                 except:
-                    return action_result.set_status(phantom.APP_ERROR, "Failed to get command output from 'command_id' "
-                                                                       "and 'shell_id'")
+                    return action_result.set_status(phantom.APP_ERROR, "Failed to get command output from 'command_id' " "and 'shell_id'")
                 self._protocol.close_shell(shell_id)
             elif async_:
                 shell_id = self._protocol.open_shell()
                 command_id = self._protocol.run_command(shell_id, cmd, args)
                 summary = action_result.set_summary({})
-                summary['shell_id'] = shell_id
-                summary['command_id'] = command_id
+                summary["shell_id"] = shell_id
+                summary["command_id"] = command_id
                 return phantom.APP_SUCCESS
             else:
                 resp = self._session.run_cmd(cmd, args)
         except UnicodeDecodeError:
             return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error running command: {}".format(unquote(self._get_error_message_from_exception(e))))
+            return action_result.set_status(
+                phantom.APP_ERROR, "Error running command: {}".format(unquote(self._get_error_message_from_exception(e)))
+            )
         if resp is None:
             # The exception will probably catch this
             self.debug_print("Error: _run_cmd is missing parameters")
@@ -352,17 +345,15 @@ class WindowsRemoteManagementConnector(BaseConnector):
         resp.std_err = self._handle_py_ver_compat_for_input_str(resp.std_err, True)
 
         if self._python_version == 3:
-            resp.std_out = resp.std_out.decode('UTF-8')
-            resp.std_err = resp.std_err.decode('UTF-8')
+            resp.std_out = resp.std_out.decode("UTF-8")
+            resp.std_err = resp.std_err.decode("UTF-8")
 
         try:
             return parse_callback(action_result, resp, **additional_data)
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error parsing output: {}".format(self._get_error_message_from_exception(e)))
+            return action_result.set_status(phantom.APP_ERROR, "Error parsing output: {}".format(self._get_error_message_from_exception(e)))
 
-    def _run_ps(self, action_result, script, parse_callback=pc.basic, additional_data=None, async_=False,
-                command_id=None, shell_id=None):
+    def _run_ps(self, action_result, script, parse_callback=pc.basic, additional_data=None, async_=False, command_id=None, shell_id=None):
         if additional_data is None:
             additional_data = {}
         resp = None
@@ -383,14 +374,14 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 if len(resp.std_err):
                     resp.std_err = self._session._clean_error_msg(resp.std_err)
                     if isinstance(resp.std_err, bytes):
-                        resp.std_err = resp.std_err.decode('UTF-8', errors='backslashreplace')
+                        resp.std_err = resp.std_err.decode("UTF-8", errors="backslashreplace")
             elif async_:
-                encoded_ps = b64encode(script.encode('utf_16_le')).decode('ascii')
+                encoded_ps = b64encode(script.encode("utf_16_le")).decode("ascii")
                 shell_id = self._protocol.open_shell()
-                command_id = self._protocol.run_command(shell_id, 'powershell -encodedcommand {0}'.format(encoded_ps))
+                command_id = self._protocol.run_command(shell_id, "powershell -encodedcommand {0}".format(encoded_ps))
                 summary = action_result.set_summary({})
-                summary['shell_id'] = shell_id
-                summary['command_id'] = command_id
+                summary["shell_id"] = shell_id
+                summary["command_id"] = command_id
                 return phantom.APP_SUCCESS
             else:
                 if self._python_version == 2:
@@ -399,8 +390,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
         except UnicodeDecodeError:
             return action_result.set_status(phantom.APP_ERROR, "Error running PowerShell script: {}".format(consts.WINRM_UNICODE_ERROR_MESSAGE))
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error running PowerShell script: {}".format(self._get_error_message_from_exception(e)))
+            return action_result.set_status(
+                phantom.APP_ERROR, "Error running PowerShell script: {}".format(self._get_error_message_from_exception(e))
+            )
         if resp is None:
             self.debug_print("Error: _run_ps is missing parameters")
             return action_result.set_status(phantom.APP_ERROR, "Unknown error while running PowerShell script")
@@ -410,14 +402,13 @@ class WindowsRemoteManagementConnector(BaseConnector):
         resp.std_err = self._session._clean_error_msg(resp.std_err)
 
         if self._python_version == 3:
-            resp.std_out = resp.std_out.decode('UTF-8')
-            resp.std_err = resp.std_err.decode('UTF-8')
+            resp.std_out = resp.std_out.decode("UTF-8")
+            resp.std_err = resp.std_err.decode("UTF-8")
 
         try:
             return parse_callback(action_result, resp, **additional_data)
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Error parsing output: {}".format(self._get_error_message_from_exception(e)))
+            return action_result.set_status(phantom.APP_ERROR, "Error parsing output: {}".format(self._get_error_message_from_exception(e)))
 
     def _handle_test_connectivity(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -425,7 +416,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             self.save_progress("Test connectivity failed")
             return action_result.get_status()
 
-        ret_val = self._run_cmd(action_result, 'ipconfig')
+        ret_val = self._run_cmd(action_result, "ipconfig")
         if phantom.is_fail(ret_val):
             self.save_progress(action_result.get_message())
             self.save_progress("Test connectivity failed")
@@ -438,7 +429,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ret_val = self._run_ps(action_result, 'get-process | select * | convertTo-json', pc.list_processes)
+        ret_val = self._run_ps(action_result, "get-process | select * | convertTo-json", pc.list_processes)
         if phantom.is_fail(ret_val):
             return ret_val
 
@@ -449,23 +440,16 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ret_val, pid = self._validate_integer(action_result, param.get('pid'), "pid", True)
+        ret_val, pid = self._validate_integer(action_result, param.get("pid"), "pid", True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        name = param.get('name')
+        name = param.get("name")
         if pid is None and name is None:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please specify at least one of 'pid' or 'name'"
-            )
+            return action_result.set_status(phantom.APP_ERROR, "Please specify at least one of 'pid' or 'name'")
 
-        args = {
-            "id": pid,
-            "processname": name
-        }
-        ret_val, script = self._create_ps_script(
-            action_result, args, cmd_prefix="Stop-Process", cmd_suffix="-Force"
-        )
+        args = {"id": pid, "processname": name}
+        ret_val, script = self._create_ps_script(action_result, args, cmd_prefix="Stop-Process", cmd_suffix="-Force")
         if phantom.is_fail(ret_val):
             return ret_val
 
@@ -481,8 +465,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        command = 'netstat'
-        arguments = ['-no']  # yes
+        command = "netstat"
+        arguments = ["-no"]  # yes
 
         ret_val = self._run_cmd(action_result, command, arguments, pc.list_connections)
         if phantom.is_fail(ret_val):
@@ -491,46 +475,44 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
     def _create_filter(self, action_result, param):
         filter_data = {}
-        filter_vars = [
-            'filter_port',
-            'filter_ip',
-            'direction',
-            'protocol'
-        ]
+        filter_vars = ["filter_port", "filter_ip", "direction", "protocol"]
         for var in filter_vars:
             if var in param:
                 filter_data.update({var: param[var]})
 
-        other = param.get('other')
+        other = param.get("other")
         if other:
             try:
                 other_dict = json.loads(other)
             except Exception as e:
-                return action_result.set_status(
-                    phantom.APP_ERROR,
-                    "Error parsing JSON Object: {}".format(self._get_error_message_from_exception(e))
-                ), None
+                return (
+                    action_result.set_status(
+                        phantom.APP_ERROR, "Error parsing JSON Object: {}".format(self._get_error_message_from_exception(e))
+                    ),
+                    None,
+                )
             filter_data.update(other_dict)
 
         return phantom.APP_SUCCESS, filter_data
 
     def _handle_list_firewall_rules(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
-        direction = param.get('direction')
+        direction = param.get("direction")
         if direction and direction not in consts.DIRECTION_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(
-                consts.DIRECTION_VALUE_LIST, "direction"))
+            return action_result.set_status(
+                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIRECTION_VALUE_LIST, "direction")
+            )
 
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        command = 'netsh'
+        command = "netsh"
         ret_val, filter_data = self._create_filter(action_result, param)
         if phantom.is_fail(ret_val):
             return ret_val
 
         # There isn't a way to filter using the command, so we need to handle that in the parser
-        arguments = ['advfirewall', 'firewall', 'show', 'rule', 'name=all']
+        arguments = ["advfirewall", "firewall", "show", "rule", "name=all"]
         ret_val = self._run_cmd(action_result, command, arguments, pc.list_firewall_rules, filter_data)
 
         return ret_val
@@ -541,8 +523,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         ps_script_base = '& "netsh.exe" "advfirewall" "firewall" "delete" "rule" '
-        argument_str = ''
-        other = param.get('other')
+        argument_str = ""
+        other = param.get("other")
         if other:
             try:
                 other_dict = json.loads(other)
@@ -551,39 +533,39 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     phantom.APP_ERROR, "Error parsing JSON Object: {}".format(self._get_error_message_from_exception(e))
                 )
             param.update(other_dict)
-        dir = param.get('dir')
+        dir = param.get("dir")
         if dir and dir not in consts.DIR_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, 'dir'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, "dir"))
 
-        val_map = {
-            "local_ip": "localip",
-            "local_port": "localport",
-            "remote_ip": "remoteip",
-            "remote_port": "remoteport"
-        }
+        val_map = {"local_ip": "localip", "local_port": "localport", "remote_ip": "remoteip", "remote_port": "remoteport"}
 
         valid_params = {
-            'name', 'dir',
-            'remote_ip', 'local_ip', 'remote_port',
-            'local_port', 'protocol', 'program',
-            'profile', 'service',
-            'localip', 'remoteip',
-            'localport', 'remoteport'
+            "name",
+            "dir",
+            "remote_ip",
+            "local_ip",
+            "remote_port",
+            "local_port",
+            "protocol",
+            "program",
+            "profile",
+            "service",
+            "localip",
+            "remoteip",
+            "localport",
+            "remoteport",
         }
         for k, v in six.iteritems(param):
             if k in valid_params:
-                argument = '"{}"'.format(self._sanitize_string('{}={}'.format(val_map.get(k, k),
-                    self._handle_py_ver_compat_for_input_str(v))))
-                argument_str = '{}{} '.format(argument_str, argument)
+                argument = '"{}"'.format(self._sanitize_string("{}={}".format(val_map.get(k, k), self._handle_py_ver_compat_for_input_str(v))))
+                argument_str = "{}{} ".format(argument_str, argument)
 
-        ret_val = self._run_ps(action_result, '{}{}'.format(ps_script_base, argument_str), pc.delete_firewall_rule)
+        ret_val = self._run_ps(action_result, "{}{}".format(ps_script_base, argument_str), pc.delete_firewall_rule)
         if phantom.is_fail(ret_val):
             return ret_val
         return action_result.set_status(
             phantom.APP_SUCCESS,
-            "Successfully deleted firewall rule{}".format(
-                "s" if action_result.get_summary().get('rules_deleted', 0) > 1 else ""
-            )
+            "Successfully deleted firewall rule{}".format("s" if action_result.get_summary().get("rules_deleted", 0) > 1 else ""),
         )
 
     def _handle_block_ip(self, param):
@@ -592,11 +574,11 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         ps_script = '& "netsh.exe" "advfirewall" "firewall" "add" "rule" '
-        name = self._handle_py_ver_compat_for_input_str(param['name'])
-        remote_ip = self._handle_py_ver_compat_for_input_str(param['remote_ip'])
+        name = self._handle_py_ver_compat_for_input_str(param["name"])
+        remote_ip = self._handle_py_ver_compat_for_input_str(param["remote_ip"])
 
-        ps_script = '{}"{}" '.format(ps_script, self._sanitize_string('{}={}'.format('name', name)))
-        ps_script = '{}"{}" '.format(ps_script, self._sanitize_string('{}={}'.format('remoteip', remote_ip)))
+        ps_script = '{}"{}" '.format(ps_script, self._sanitize_string("{}={}".format("name", name)))
+        ps_script = '{}"{}" '.format(ps_script, self._sanitize_string("{}={}".format("remoteip", remote_ip)))
         ps_script = '{}"dir=in" "action=block"'.format(ps_script)
 
         ret_val = self._run_ps(action_result, ps_script, pc.check_exit_no_data_stdout)
@@ -610,8 +592,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         ps_script_base = '& "netsh.exe" "advfirewall" "firewall" "add" "rule" '
-        argument_str = ''
-        other = param.get('other')
+        argument_str = ""
+        other = param.get("other")
         if other:
             try:
                 other_dict = json.loads(other)
@@ -620,38 +602,45 @@ class WindowsRemoteManagementConnector(BaseConnector):
                     phantom.APP_ERROR, "Error parsing JSON Object: {}".format(self._get_error_message_from_exception(e))
                 )
             param.update(other_dict)
-        dir = param.get('dir')
+        dir = param.get("dir")
         if dir and dir not in consts.DIR_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, 'dir'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DIR_VALUE_LIST, "dir"))
 
-        action = param.get('action')
+        action = param.get("action")
         if action and action not in consts.ACTION_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.ACTION_VALUE_LIST, 'action'))
+            return action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.ACTION_VALUE_LIST, "action"))
 
-        val_map = {
-            "local_ip": "localip",
-            "local_port": "localport",
-            "remote_ip": "remoteip",
-            "remote_port": "remoteport"
-        }
+        val_map = {"local_ip": "localip", "local_port": "localport", "remote_ip": "remoteip", "remote_port": "remoteport"}
 
         valid_params = {
-            'name', 'dir', 'action',
-            'remote_ip', 'local_ip', 'remote_port',
-            'local_port', 'protocol', 'enable',
-            'program', 'service', 'description',
-            'interfacetype', 'rmtcomputergrp', 'rmtusrgrp',
-            'edge', 'security',
-            'localip', 'remoteip',
-            'localport', 'remoteport'
+            "name",
+            "dir",
+            "action",
+            "remote_ip",
+            "local_ip",
+            "remote_port",
+            "local_port",
+            "protocol",
+            "enable",
+            "program",
+            "service",
+            "description",
+            "interfacetype",
+            "rmtcomputergrp",
+            "rmtusrgrp",
+            "edge",
+            "security",
+            "localip",
+            "remoteip",
+            "localport",
+            "remoteport",
         }
         for k, v in six.iteritems(param):
             if k in valid_params:
-                argument = '"{}"'.format(self._sanitize_string('{}={}'.format(val_map.get(k, k),
-                    self._handle_py_ver_compat_for_input_str(v))))
-                argument_str = '{}{} '.format(argument_str, argument)
+                argument = '"{}"'.format(self._sanitize_string("{}={}".format(val_map.get(k, k), self._handle_py_ver_compat_for_input_str(v))))
+                argument_str = "{}{} ".format(argument_str, argument)
 
-        ret_val = self._run_ps(action_result, '{}{}'.format(ps_script_base, argument_str), pc.check_exit_no_data_stdout)
+        ret_val = self._run_ps(action_result, "{}{}".format(ps_script_base, argument_str), pc.check_exit_no_data_stdout)
         if phantom.is_fail(ret_val):
             return ret_val
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully created firewall rule")
@@ -673,7 +662,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ret_val, session_id = self._validate_integer(action_result, param.get('session_id'), "session_id", True)
+        ret_val, session_id = self._validate_integer(action_result, param.get("session_id"), "session_id", True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
@@ -691,23 +680,19 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return RetVal(ret_val)
 
         volume = -1
-        std_out = action_result.get_data()[0]['std_out']
+        std_out = action_result.get_data()[0]["std_out"]
         if isinstance(std_out, bytes):  # py3
-            std_out = std_out.decode('UTF-8')
+            std_out = std_out.decode("UTF-8")
 
         try:
             for line in std_out.splitlines():
-                if line.strip().lower().endswith('system'):
+                if line.strip().lower().endswith("system"):
                     volume = int(line.split()[1])
         except:
-            return RetVal(action_result.set_status(
-                phantom.APP_ERROR, "Error parsing diskpart output"
-            ))
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error parsing diskpart output"))
 
         if volume == -1:
-            return RetVal(action_result.set_status(
-                phantom.APP_ERROR, "Could not find the System partition"
-            ))
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Could not find the System partition"))
 
         return phantom.APP_SUCCESS, volume
 
@@ -731,10 +716,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ret_val = self._update_system_volume(
-            action_result,
-            "inactive"
-        )
+        ret_val = self._update_system_volume(action_result, "inactive")
         if phantom.is_fail(ret_val):
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_PARTITION)
 
@@ -745,10 +727,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ret_val = self._update_system_volume(
-            action_result,
-            "active"
-        )
+        ret_val = self._update_system_volume(action_result, "active")
         if phantom.is_fail(ret_val):
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_PARTITION)
 
@@ -759,9 +738,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ps_script = '& shutdown.exe /s /t 5 '
-        comment = self._handle_py_ver_compat_for_input_str(param.get('comment'))
-        reason = self._handle_py_ver_compat_for_input_str(param.get('reason'))
+        ps_script = "& shutdown.exe /s /t 5 "
+        comment = self._handle_py_ver_compat_for_input_str(param.get("comment"))
+        reason = self._handle_py_ver_compat_for_input_str(param.get("reason"))
         if comment:
             ps_script = '{}/c "{}"'.format(ps_script, self._sanitize_string(comment))
         if reason:
@@ -777,9 +756,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        ps_script = '& shutdown.exe /r /t 5 '
-        comment = self._handle_py_ver_compat_for_input_str(param.get('comment'))
-        reason = self._handle_py_ver_compat_for_input_str(param.get('reason'))
+        ps_script = "& shutdown.exe /r /t 5 "
+        comment = self._handle_py_ver_compat_for_input_str(param.get("comment"))
+        reason = self._handle_py_ver_compat_for_input_str(param.get("reason"))
         if comment:
             ps_script = '{}/c "{}"'.format(ps_script, self._sanitize_string(comment))
         if reason:
@@ -794,32 +773,27 @@ class WindowsRemoteManagementConnector(BaseConnector):
     def _format_list_applocker_script(self, action_result, location, ldap, xml=True, module=True):
         suffix = "-XML" if xml else ""
         if location.lower() not in consts.LOCATION_VALUE_LIST:
-            return action_result.set_status(
-                phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.LOCATION_VALUE_LIST, "location")
-            ), None
+            return (
+                action_result.set_status(phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.LOCATION_VALUE_LIST, "location")),
+                None,
+            )
         if location.lower() == "domain":
             if not ldap:
-                return action_result.set_status(
-                    phantom.APP_ERROR, 'Error: Please include "ldap" with "domain"'
-                ), None
+                return action_result.set_status(phantom.APP_ERROR, 'Error: Please include "ldap" with "domain"'), None
             else:
-                args = {
-                    "LDAP": ldap
-                }
+                args = {"LDAP": ldap}
                 if module:
-                    prefix = '{}Get-AppLockerPolicy -Domain'.format(consts.APPLOCKER_BASE_SCRIPT)
+                    prefix = "{}Get-AppLockerPolicy -Domain".format(consts.APPLOCKER_BASE_SCRIPT)
                 else:
-                    prefix = 'Get-AppLockerPolicy -Domain'
-                ret_val, ps_script = self._create_ps_script(
-                    action_result, args, cmd_prefix=prefix, cmd_suffix=suffix
-                )
+                    prefix = "Get-AppLockerPolicy -Domain"
+                ret_val, ps_script = self._create_ps_script(action_result, args, cmd_prefix=prefix, cmd_suffix=suffix)
                 if phantom.is_fail(ret_val):
                     return ret_val, None
         else:
             if module:
-                ps_script = '{0}Get-AppLockerPolicy -{1} {2}'.format(consts.APPLOCKER_BASE_SCRIPT, location, suffix)
+                ps_script = "{0}Get-AppLockerPolicy -{1} {2}".format(consts.APPLOCKER_BASE_SCRIPT, location, suffix)
             else:
-                ps_script = 'Get-AppLockerPolicy -{0} {1}'.format(location, suffix)
+                ps_script = "Get-AppLockerPolicy -{0} {1}".format(location, suffix)
 
         return phantom.APP_SUCCESS, ps_script
 
@@ -828,8 +802,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        location = param['location']
-        ldap = self._handle_py_ver_compat_for_input_str(param.get('ldap'))
+        location = param["location"]
+        ldap = self._handle_py_ver_compat_for_input_str(param.get("ldap"))
         ret_val, ps_script = self._format_list_applocker_script(action_result, location, ldap)
         if phantom.is_fail(ret_val):
             return ret_val
@@ -844,20 +818,15 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        deny_allow = param['deny_allow'].lower()
+        deny_allow = param["deny_allow"].lower()
         if deny_allow not in consts.DENY_ALLOW_VALUE_LIST:
             return action_result.set_status(
                 phantom.APP_ERROR, consts.VALUE_LIST_VALIDATION_MESSAGE.format(consts.DENY_ALLOW_VALUE_LIST, "deny_allow")
             )
 
-        file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
-        args_new_policy = {
-            'User': param.get('user'),
-            'RuleNamePrefix': param.get('rule_name_prefix')
-        }
-        args_set_policy = {
-            'LDAP': param.get('ldap')
-        }
+        file_path = self._handle_py_ver_compat_for_input_str(param["file_path"])
+        args_new_policy = {"User": param.get("user"), "RuleNamePrefix": param.get("rule_name_prefix")}
+        args_set_policy = {"LDAP": param.get("ldap")}
         ret_val, new_policy_str = self._create_ps_script(action_result, args_new_policy)
         if phantom.is_fail(ret_val):
             return ret_val
@@ -867,13 +836,15 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return ret_val
 
         if deny_allow == "allow":
-            ps_script = '{}{}'.format(consts.APPLOCKER_BASE_SCRIPT, consts.APPLOCKER_CREATE_POLICY.format(
-                self._sanitize_string(file_path), new_policy_str, set_policy_str
-            ))
+            ps_script = "{}{}".format(
+                consts.APPLOCKER_BASE_SCRIPT,
+                consts.APPLOCKER_CREATE_POLICY.format(self._sanitize_string(file_path), new_policy_str, set_policy_str),
+            )
         else:
-            ps_script = '{}{}'.format(consts.APPLOCKER_BASE_SCRIPT, consts.APPLOCKER_CREATE_POLICY_DENY.format(
-                self._sanitize_string(file_path), new_policy_str, set_policy_str
-            ))
+            ps_script = "{}{}".format(
+                consts.APPLOCKER_BASE_SCRIPT,
+                consts.APPLOCKER_CREATE_POLICY_DENY.format(self._sanitize_string(file_path), new_policy_str, set_policy_str),
+            )
 
         self.debug_print(ps_script)
 
@@ -888,18 +859,16 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        policy_id = self._handle_py_ver_compat_for_input_str(param['applocker_policy_id'])
-        if not re.match(r'[\w\d-]*', policy_id):
-            return action_result.set_status(
-                phantom.APP_ERROR, "Invalid AppLocker Policy ID"
-            )
-        ldap = param.get('ldap')
+        policy_id = self._handle_py_ver_compat_for_input_str(param["applocker_policy_id"])
+        if not re.match(r"[\w\d-]*", policy_id):
+            return action_result.set_status(phantom.APP_ERROR, "Invalid AppLocker Policy ID")
+        ldap = param.get("ldap")
         if ldap:
-            location = 'domain'
+            location = "domain"
         else:
-            location = 'local'
+            location = "local"
 
-        ret_val, set_policy_str = self._create_ps_script(action_result, {'LDAP': ldap})
+        ret_val, set_policy_str = self._create_ps_script(action_result, {"LDAP": ldap})
         if phantom.is_fail(ret_val):
             return ret_val
 
@@ -909,9 +878,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
             action_result = tmp_action_result
             return ret_val
 
-        ps_script = '{}{}'.format(consts.APPLOCKER_BASE_SCRIPT, consts.APPLOCKER_DELETE_POLICY.format(
-            self._sanitize_string(policy_id), ps_script, set_policy_str
-        ))
+        ps_script = "{}{}".format(
+            consts.APPLOCKER_BASE_SCRIPT, consts.APPLOCKER_DELETE_POLICY.format(self._sanitize_string(policy_id), ps_script, set_policy_str)
+        )
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
@@ -924,16 +893,13 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
+        file_path = self._handle_py_ver_compat_for_input_str(param["file_path"])
 
         file_path = self._sanitize_string(file_path)
 
         script_str = consts.GET_FILE.format(file_path)
 
-        additional_data = {
-            'container_id': self.get_container_id(),
-            'file_name': ntpath.split(file_path)[-1]
-        }
+        additional_data = {"container_id": self.get_container_id(), "file_name": ntpath.split(file_path)[-1]}
         ret_val = self._run_ps(action_result, script_str, pc.decodeb64_add_to_vault, additional_data)
         if phantom.is_fail(ret_val):
             return ret_val
@@ -946,22 +912,21 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         try:
-            vault_id = self._handle_py_ver_compat_for_input_str(param['vault_id'])
+            vault_id = self._handle_py_ver_compat_for_input_str(param["vault_id"])
             success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
-            path = list(file_info)[0].get('path')
+            path = list(file_info)[0].get("path")
         except:
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
 
-        destination = self._handle_py_ver_compat_for_input_str(param['destination'])
+        destination = self._handle_py_ver_compat_for_input_str(param["destination"])
 
         try:
-            with open(path, 'rb') as fp:
+            with open(path, "rb") as fp:
                 encoded_file = base64.b64encode(fp.read())
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR,
-                "Unable to base64 encode file", self._get_error_message_from_exception(e))
+            return action_result.set_status(phantom.APP_ERROR, "Unable to base64 encode file", self._get_error_message_from_exception(e))
 
         destination = self._sanitize_string(destination)
 
@@ -970,17 +935,13 @@ class WindowsRemoteManagementConnector(BaseConnector):
         try:
             chunks = textwrap.wrap(encoded_file, 1650)
         except TypeError:
-            chunks = textwrap.wrap(encoded_file.decode('UTF-8'), 1650)
+            chunks = textwrap.wrap(encoded_file.decode("UTF-8"), 1650)
         num_chunks = len(chunks)
         for i, chunk in enumerate(chunks):
-            ps_script = consts.SEND_FILE_START.format(
-                b64string_chunk=chunk,
-                file_path=destination,
-                action=">>" if sent_first else ">"
-            )
+            ps_script = consts.SEND_FILE_START.format(b64string_chunk=chunk, file_path=destination, action=">>" if sent_first else ">")
             # The final chunk
             if i == num_chunks - 1:
-                ps_script = '{}{}'.format(ps_script, consts.SEND_FILE_END)
+                ps_script = "{}{}".format(ps_script, consts.SEND_FILE_END)
             self.save_progress("Sending chunk {} of {}".format(i + 1, num_chunks))
             ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.ensure_no_errors)
             if phantom.is_fail(ret_val):
@@ -995,13 +956,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        path_from = self._handle_py_ver_compat_for_input_str(param['from'])
-        path_to = self._handle_py_ver_compat_for_input_str(param['to'])
+        path_from = self._handle_py_ver_compat_for_input_str(param["from"])
+        path_to = self._handle_py_ver_compat_for_input_str(param["to"])
 
-        ps_script = "& copy {0} {1}".format(
-            self._sanitize_string(path_from),
-            self._sanitize_string(path_to)
-        )
+        ps_script = "& copy {0} {1}".format(self._sanitize_string(path_from), self._sanitize_string(path_to))
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
@@ -1014,13 +972,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
         if not self._init_session(action_result, param):
             return action_result.get_status()
 
-        file_path = self._handle_py_ver_compat_for_input_str(param['file_path'])
-        force_delete = '-Force ' if param.get('force') else ''
+        file_path = self._handle_py_ver_compat_for_input_str(param["file_path"])
+        force_delete = "-Force " if param.get("force") else ""
 
-        ps_script = "& del {0}{1}".format(
-            force_delete,
-            self._sanitize_string(file_path)
-        )
+        ps_script = "& del {0}{1}".format(force_delete, self._sanitize_string(file_path))
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
@@ -1034,23 +989,18 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         # Validate Parameters
-        command_id = param.get('command_id')
-        shell_id = param.get('shell_id')
+        command_id = param.get("command_id")
+        shell_id = param.get("shell_id")
         if command_id and not shell_id or shell_id and not command_id:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please specify 'command_id' and 'shell_id' together"
-            )
-        command = self._handle_py_ver_compat_for_input_str(param.get('command'))
-        arguments = self._handle_py_ver_compat_for_input_str(param.get('arguments'))
+            return action_result.set_status(phantom.APP_ERROR, "Please specify 'command_id' and 'shell_id' together")
+        command = self._handle_py_ver_compat_for_input_str(param.get("command"))
+        arguments = self._handle_py_ver_compat_for_input_str(param.get("arguments"))
         if command is None and command_id is None:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please specify either 'command' or 'command_id' + 'shell_id'"
-            )
-        async_ = param.get('async', False)
+            return action_result.set_status(phantom.APP_ERROR, "Please specify either 'command' or 'command_id' + 'shell_id'")
+        async_ = param.get("async", False)
 
         if not async_:
-            ret_val, custom_parser = self._get_custom_parser_method(action_result,
-                self._handle_py_ver_compat_for_input_str(param.get('parser')))
+            ret_val, custom_parser = self._get_custom_parser_method(action_result, self._handle_py_ver_compat_for_input_str(param.get("parser")))
             if phantom.is_fail(ret_val):
                 return ret_val
         else:
@@ -1074,23 +1024,20 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.get_status()
 
         # Validate Parameters
-        command_id = param.get('command_id')
-        shell_id = param.get('shell_id')
+        command_id = param.get("command_id")
+        shell_id = param.get("shell_id")
         if command_id and not shell_id or shell_id and not command_id:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please specify 'command_id' and 'shell_id' together"
-            )
-        script_file = self._handle_py_ver_compat_for_input_str(param.get('script_file'))
-        script_str = param.get('script_str')
+            return action_result.set_status(phantom.APP_ERROR, "Please specify 'command_id' and 'shell_id' together")
+        script_file = self._handle_py_ver_compat_for_input_str(param.get("script_file"))
+        script_str = param.get("script_str")
         if script_file is None and script_str is None and command_id is None:
             return action_result.set_status(
                 phantom.APP_ERROR, "Please specify either a 'script_file', 'script_str', or 'command_id' + 'shell_id'"
             )
-        async_ = param.get('async', False)
+        async_ = param.get("async", False)
 
         if not async_:
-            ret_val, custom_parser = self._get_custom_parser_method(action_result,
-                self._handle_py_ver_compat_for_input_str(param.get('parser')))
+            ret_val, custom_parser = self._get_custom_parser_method(action_result, self._handle_py_ver_compat_for_input_str(param.get("parser")))
             if phantom.is_fail(ret_val):
                 return ret_val
         else:
@@ -1118,10 +1065,10 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
         self.debug_print("action_id", self.get_action_identifier())
 
-        if action_id == 'test_connectivity':
+        if action_id == "test_connectivity":
             ret_val = self._handle_test_connectivity(param)
 
-        elif action_id == 'run_command':
+        elif action_id == "run_command":
             ret_val = self._handle_run_command(param)
 
         elif action_id == "run_script":
@@ -1205,7 +1152,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import argparse
 
@@ -1215,10 +1162,10 @@ if __name__ == '__main__':
 
     argparser = argparse.ArgumentParser()
 
-    argparser.add_argument('input_test_json', help='Input Test JSON file')
-    argparser.add_argument('-u', '--username', help='username', required=False)
-    argparser.add_argument('-p', '--password', help='password', required=False)
-    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
+    argparser.add_argument("input_test_json", help="Input Test JSON file")
+    argparser.add_argument("-u", "--username", help="username", required=False)
+    argparser.add_argument("-p", "--password", help="password", required=False)
+    argparser.add_argument("-v", "--verify", action="store_true", help="verify", required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -1231,28 +1178,30 @@ if __name__ == '__main__':
 
         # User specified a username but not a password, so ask
         import getpass
+
         password = getpass.getpass("Password: ")
 
     if username and password:
         try:
             print("Accessing the Login page")
-            login_url = BaseConnector._get_phantom_base_url() + 'login'
-            r = requests.get(login_url, verify=verify)   # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
-            csrftoken = r.cookies['csrftoken']
+            login_url = BaseConnector._get_phantom_base_url() + "login"
+            r = requests.get(login_url, verify=verify)  # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
+            csrftoken = r.cookies["csrftoken"]
 
             data = dict()
-            data['username'] = username
-            data['password'] = password
-            data['csrfmiddlewaretoken'] = csrftoken
+            data["username"] = username
+            data["password"] = password
+            data["csrfmiddlewaretoken"] = csrftoken
 
             headers = dict()
-            headers['Cookie'] = 'csrftoken=' + csrftoken
-            headers['Referer'] = login_url
+            headers["Cookie"] = "csrftoken=" + csrftoken
+            headers["Referer"] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url,   # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
-                                verify=verify, data=data, headers=headers)
-            session_id = r2.cookies['sessionid']
+            r2 = requests.post(
+                login_url, verify=verify, data=data, headers=headers  # nosemgrep: python.requests.best-practice.use-timeout.use-timeout
+            )
+            session_id = r2.cookies["sessionid"]
         except Exception as e:
             print("Unable to get session id from the platfrom. Error: " + str(e))
             sys.exit(1)
@@ -1266,8 +1215,8 @@ if __name__ == '__main__':
         connector.print_progress_message = True
 
         if session_id is not None:
-            in_json['user_session_token'] = session_id
-            connector._set_csrf_info(csrftoken, headers['Referer'])
+            in_json["user_session_token"] = session_id
+            connector._set_csrf_info(csrftoken, headers["Referer"])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))

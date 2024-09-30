@@ -1,1 +1,2 @@
 **Unreleased**
+* Updated dependencies and code styling [PAPP-34725] 

@@ -1,6 +1,3 @@
-beautifulsoup4==4.9.1
 pykerberos==1.2.4
 pywinrm==0.4.3
 # Pinned to the current platform version
-# Needed to avoid incompatibility with platform packages caused by urllib3 >= 2.0.0
-xmltodict==0.13.0
