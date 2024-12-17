@@ -2,11 +2,11 @@
 # Windows Remote Management
 
 Publisher: Splunk  
-Connector Version: 2.3.2  
+Connector Version: 2.3.3  
 Product Vendor: Microsoft  
 Product Name: Windows Remote Management  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.2.1  
+Minimum Product Version: 6.3.0  
 
 This app integrates with the Windows Remote Management service to execute various actions
 
@@ -132,15 +132,24 @@ which you can optionally use to retrieve the output of that command at a later t
 
 ### Certificate Authentication
 
-To authenticate using SSL certificates, select `certificate` authentication in asset configuration method and pass following configuration parameters.
+To authenticate using SSL certificates, select `certificate` as the authentication method in the asset configuration and provide the following configuration parameters:
 
-* cert_pem_path - A path to signed certificate file that is trusted by the Windows instance, in PEM format
+- **Path to SSL certificate PEM file** - A path to signed certificate file that is trusted by the Windows instance, in PEM format
 
-* cert_key_pem_path - A filepath to key used to generate cert_pem file
+- **Path to SSL key file** - A filepath to key used to generate cert_pem file
 
-* ca_trust_path - The certificate of the certificate authority that signed cert_file. It's needed only when you set up your own certificate authority.
+- **Path to trusted CRT file** - The certificate of the certificate authority that signed cert_file. It's needed only when you set up your own certificate authority.
 
-It is recommended that these files be placed under the <PHANTOM_HOME>/etc/ssl/ directory. These files must be readable by the phantom-worker user.
+It is recommended to place these files under the <PHANTOM_HOME>/etc/ssl/ directory. Ensure that these files are readable by the phantom-worker user.
+
+Steps to Enable [Certificate Authentication](https://learn.microsoft.com/en-us/troubleshoot/windows-client/system-management-components/configure-winrm-for-https) in WinRM:
+- Check if Certificate Authentication is enabled: `winrm get winrm/config/service/auth`
+- Enable Certificate Authentication if not already enabled: `winrm set winrm/config/service/auth '@{Certificate="true"}'`
+
+[Import the Certificate](https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate?view=windowsserver2025-ps) to Trusted [Certificate Stores](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores).
+
+Link certificate to user account, enabling secure authentication using the certificate :\
+`New-Item -Path WSMan:\localhost\ClientCertificate -Subject '<subject>' -URI * -Issuer <Thumbprint> -Credential (Get-Credential) -Force`
 
 ### Kerberos Authentication
 
