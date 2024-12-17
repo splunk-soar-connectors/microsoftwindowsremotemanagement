@@ -131,12 +131,13 @@ To authenticate using SSL certificates, select `certificate` as the authenticati
 It is recommended to place these files under the <PHANTOM_HOME>/etc/ssl/ directory. Ensure that these files are readable by the phantom-worker user.
 
 Steps to Enable [Certificate Authentication](https://learn.microsoft.com/en-us/troubleshoot/windows-client/system-management-components/configure-winrm-for-https) in WinRM:
+
 - Check if Certificate Authentication is enabled: `winrm get winrm/config/service/auth`
 - Enable Certificate Authentication if not already enabled: `winrm set winrm/config/service/auth '@{Certificate="true"}'`
 
 [Import the Certificate](https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate?view=windowsserver2025-ps) to Trusted [Certificate Stores](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores).
 
-Link certificate to user account, enabling secure authentication using the certificate :\
+Link certificate to user account, enabling secure authentication using the certificate : 
 `New-Item -Path WSMan:\localhost\ClientCertificate -Subject '<subject>' -URI * -Issuer <Thumbprint> -Credential (Get-Credential) -Force`
 
 ### Kerberos Authentication
