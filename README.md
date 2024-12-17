@@ -168,8 +168,8 @@ You'll also need to setup your instance to support Kerberos:
     run `kinit` periodically to refresh the ticket for the user, alternatively `keytab` file can be created on server and used on client for connectivity.
 
 
-### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Windows Remote Management asset in SOAR.
+### Configuration variables
+This table lists the configuration variables required to operate Windows Remote Management. These variables are specified when configuring a Windows Remote Management asset in Splunk SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
