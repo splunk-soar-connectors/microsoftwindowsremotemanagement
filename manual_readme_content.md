@@ -1,6 +1,6 @@
 [comment]: # ""
 [comment]: # "    File: README.md"
-[comment]: # "    Copyright (c) 2018-2024 Splunk Inc."
+[comment]: # "    Copyright (c) 2018-2025 Splunk Inc."
 [comment]: # "    "
 [comment]: # "    Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
 [comment]: # ""
@@ -122,11 +122,11 @@ which you can optionally use to retrieve the output of that command at a later t
 
 To authenticate using SSL certificates, select `certificate` as the authentication method in the asset configuration and provide the following configuration parameters:
 
-- **Path to SSL certificate PEM file** - The path to the signed certificate file that is trusted by the Windows instance, in PEM format.
+- **Path to SSL certificate PEM file** (cert_pem_path) - The path to the signed certificate file that is trusted by the Windows instance, in PEM format.
 
-- **Path to SSL key file** - The path to the key file used to generate the `cert_pem` file.
+- **Path to SSL key file** (cert_key_pem_path) - The path to the key file used to generate the `cert_pem` file.
 
-- **Path to trusted CRT file** - The certificate of the certificate authority that signed the certificate file. This is needed only if you are using your own certificate authority.
+- **Path to trusted CRT file** (ca_trust_path) - The certificate of the certificate authority that signed the certificate file. This is needed only if you are using your own certificate authority.
 
 It is recommended to place these files under the `<PHANTOM_HOME>/etc/ssl/` directory. Ensure that these files are readable by the `phantom-worker` user.
 
