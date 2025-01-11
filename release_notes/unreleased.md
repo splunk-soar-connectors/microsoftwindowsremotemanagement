@@ -1,1 +1,3 @@
 **Unreleased**
+* Updated dependencies to resolve security vulnerabilites [PAPP-34725]
+* Updated documentation for certificate authentication [PAPP-35200]
