@@ -9,12 +9,12 @@
     "product_name": "Windows Remote Management",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2018-2024 Splunk Inc.",
-    "app_version": "2.3.2",
-    "utctime_updated": "2024-09-30T10:14:41.000000Z",
+    "license": "Copyright (c) 2018-2025 Splunk Inc.",
+    "app_version": "2.3.3",
+    "utctime_updated": "2025-09-30T10:14:41.000000Z",
     "package_name": "phantom_winrm",
     "main_module": "winrm_connector.py",
-    "min_phantom_version": "6.2.1",
+    "min_phantom_version": "6.3.0",
     "fips_compliant": true,
     "python_version": "3",
     "latest_tested_versions": [
@@ -82,19 +82,16 @@
         "cert_pem_path": {
             "description": "Path to SSL certificate PEM file",
             "data_type": "string",
-            "required": false,
             "order": 8
         },
         "cert_key_pem_path": {
             "description": "Path to SSL key file",
             "data_type": "string",
-            "required": false,
             "order": 9
         },
         "ca_trust_path": {
             "description": "Path to trusted CRT file",
             "data_type": "string",
-            "required": false,
             "order": 10
         }
     },
@@ -611,7 +608,7 @@
                     "contains": [
                         "pid"
                     ],
-                    "column_name": "PID",
+                    "column_name": "Pid",
                     "column_order": 1
                 },
                 {
@@ -620,7 +617,7 @@
                     "example_values": [
                         0.02
                     ],
-                    "column_name": "Processor Time (s)",
+                    "column_name": "Processor Time (S)",
                     "column_order": 5
                 },
                 {
@@ -891,7 +888,7 @@
                     "contains": [
                         "pid"
                     ],
-                    "column_name": "PID",
+                    "column_name": "Pid",
                     "column_order": 5
                 },
                 {
@@ -2538,7 +2535,7 @@
                     "example_values": [
                         "S-1-1-0"
                     ],
-                    "column_name": "User Or Group SID",
+                    "column_name": "User Or Group Sid",
                     "column_order": 5
                 },
                 {
@@ -2899,7 +2896,7 @@
                         "ip",
                         "host name"
                     ],
-                    "column_name": "IP/Hostname",
+                    "column_name": "Ip/Hostname",
                     "column_order": 2
                 },
                 {
@@ -3020,7 +3017,7 @@
                         "ip",
                         "host name"
                     ],
-                    "column_name": "IP/Hostname",
+                    "column_name": "Ip/Hostname",
                     "column_order": 3
                 },
                 {
@@ -3143,7 +3140,7 @@
                         "ip",
                         "host name"
                     ],
-                    "column_name": "IP/Hostname",
+                    "column_name": "Ip/Hostname",
                     "column_order": 3
                 },
                 {
@@ -3272,7 +3269,7 @@
                         "ip",
                         "host name"
                     ],
-                    "column_name": "IP/HOSTNAME",
+                    "column_name": "Ip/Hostname",
                     "column_order": 3
                 },
                 {
@@ -3325,7 +3322,7 @@
         "wheel": [
             {
                 "module": "cffi",
-                "input_file": "wheels/py36/cffi-1.15.1-cp36-cp36m-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py36/cffi-1.15.1-cp36-cp36m-manylinux1_x86_64.manylinux_2_5_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "cryptography",
@@ -3341,7 +3338,7 @@
             },
             {
                 "module": "pykerberos",
-                "input_file": "wheels/py36/pykerberos-1.2.4-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py36/pykerberos-1.2.4-cp36-cp36m-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pywinrm",
@@ -3361,7 +3358,7 @@
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py39/cryptography-43.0.1-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/cryptography-44.0.0-cp39-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pycparser",
@@ -3369,11 +3366,11 @@
             },
             {
                 "module": "pykerberos",
-                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pyspnego",
-                "input_file": "wheels/py3/pyspnego-0.11.1-py3-none-any.whl"
+                "input_file": "wheels/py3/pyspnego-0.11.2-py3-none-any.whl"
             },
             {
                 "module": "pywinrm",
