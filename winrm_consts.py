@@ -99,7 +99,7 @@ WINRM_ERROR_CODE_MESSAGE = "Error code unavailable"
 WINRM_ERROR_MESSAGE_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 WINRM_PARSE_ERROR_MESSAGE = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
 WINRM_TYPE_ERROR_MESSAGE = (
-    "Error occurred while connecting to the Winrm Server. " "Please check the asset configuration and|or the action parameters"
+    "Error occurred while connecting to the Winrm Server. Please check the asset configuration and|or the action parameters"
 )
 
 # Constants relating to value_list check

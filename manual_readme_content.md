@@ -1,10 +1,3 @@
-[comment]: # ""
-[comment]: # "    File: README.md"
-[comment]: # "    Copyright (c) 2018-2025 Splunk Inc."
-[comment]: # "    "
-[comment]: # "    Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)"
-[comment]: # ""
-[comment]: # ""
 Without additional configuration on the proxy server, it will not be possible to connect to WinRM
 using NTLM authentication through an HTTP(S) proxy. If authentication is set to basic, then it will
 still work, however.
@@ -12,8 +5,8 @@ still work, however.
 To use the proxy settings you need to add the proxy server as an environment variable. You can add
 an environment variable using the below command.
 
--   For Linux/Mac: `      export HTTP_PROXY="http://<proxy server>:<proxy port>/"     `
--   For Windows powershell: `      $env:HTTP_PROXY="http://<proxy server>:<proxy port>/"     `
+- For Linux/Mac: `      export HTTP_PROXY="http://<proxy server>:<proxy port>/"     `
+- For Windows powershell: `      $env:HTTP_PROXY="http://<proxy server>:<proxy port>/"     `
 
 If the user tries to add any invalid proxy URL, the proxy will be bypassed and won't affect the
 app's connectivity.
@@ -25,7 +18,7 @@ to connect to. For help regarding this process, consult this link:
 WinRM Ports Requirements (Based on Standard Guidelines of [IANA
 ORG](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) )
 
--   WinRM(service) TCP(transport layer protocol) port for Windows Remote Management Service - 47001
+- WinRM(service) TCP(transport layer protocol) port for Windows Remote Management Service - 47001
 
 The protocol and port can be specified with the IP/hostname. For example, if using HTTPS on port
 5986, the IP/Hostname should be **https://192.168.10.21:5986** .
@@ -43,7 +36,7 @@ will need to provide a custom parser.
 The custom parser should be a file added to the vault containing a function named **custom_parser**
 .
 
-``` shell
+```shell
         
         import phantom.app as phantom
 
@@ -68,7 +61,7 @@ value (phantom.APP_SUCCESS and phantom.APP_ERROR are equivalent to True and Fals
 Here is an example of a parser that will extract all the IPs from the output, and fail if there is a
 non-zero status code.
 
-``` shell
+```shell
         
         import re
         import phantom.app as phantom
@@ -133,33 +126,40 @@ It is recommended to place these files under the `<PHANTOM_HOME>/etc/ssl/` direc
 #### Steps to Enable [Certificate Authentication](https://learn.microsoft.com/en-us/troubleshoot/windows-client/system-management-components/configure-winrm-for-https) in WinRM:
 
 - Check if Certificate Authentication is enabled:
-   ```
-   winrm get winrm/config/service/auth
-   ```
+
+  ```
+  winrm get winrm/config/service/auth
+  ```
 
 - Enable Certificate Authentication if it is not already enabled:
-   ```
-   winrm set winrm/config/service/auth '@{Certificate="true"}'
-   ```
+
+  ```
+  winrm set winrm/config/service/auth '@{Certificate="true"}'
+  ```
 
 - [Import the Certificate](https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate?view=windowsserver2025-ps) into Trusted [Certificate Stores](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores).
 
 - Link the [client certificate](https://learn.microsoft.com/en-us/powershell/module/microsoft.wsman.management/about/about_wsman_provider?view=powershell-7.4#creating-a-new-client-certificate) to the user account for enabling secure authentication using the certificate by running this command:
-   ```
-   New-Item -Path WSMan:\localhost\ClientCertificate -URI * -Issuer <Thumbprint> -Credential (Get-Credential) -Force
-   ```
+
+  ```
+  New-Item -Path WSMan:\localhost\ClientCertificate -URI * -Issuer <Thumbprint> -Credential (Get-Credential) -Force
+  ```
 
 ### Kerberos Authentication
 
 To authenticate using Kerberos, select `kerberos` authentication in asset configuration and provide hostname and username used for authorization.
 You'll also need to setup your instance to support Kerberos:
 
--  Kerberos packages have to be installed:
-    - for Debian/Ubuntu/etc: `sudo apt-get install krb5-user`
-    - for RHEL/CentOS/etc: `sudo yum install krb5-workstation krb5-libs`
+- Kerberos packages have to be installed:
 
--  `/etc/krb5.conf` needs to be properly configured for your realm and kdc
--  If there is no DNS configuration, `hosts` file will need to have mappings for server with mssccm under same domain as on Windows server 
--  `kinit` must be run for principal that will be used to connect to msccm
--   It should be noted that Kerberos tickets will expire, so it is recommended to use a script to
-    run `kinit` periodically to refresh the ticket for the user, alternatively `keytab` file can be created on server and used on client for connectivity.
+  - for Debian/Ubuntu/etc: `sudo apt-get install krb5-user`
+  - for RHEL/CentOS/etc: `sudo yum install krb5-workstation krb5-libs`
+
+- `/etc/krb5.conf` needs to be properly configured for your realm and kdc
+
+- If there is no DNS configuration, `hosts` file will need to have mappings for server with mssccm under same domain as on Windows server
+
+- `kinit` must be run for principal that will be used to connect to msccm
+
+- It should be noted that Kerberos tickets will expire, so it is recommended to use a script to
+  run `kinit` periodically to refresh the ticket for the user, alternatively `keytab` file can be created on server and used on client for connectivity.

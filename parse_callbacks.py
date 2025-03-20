@@ -19,7 +19,6 @@
 # in any specific manner
 import base64
 import json
-from builtins import str
 from collections import OrderedDict
 
 import phantom.app as phantom
@@ -45,7 +44,7 @@ def basic(action_result, response):
 
 def check_exit(action_result, response):
     if response.std_err:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
     data = {}
     data["status_code"] = response.status_code
     data["std_out"] = response.std_out
@@ -61,34 +60,32 @@ def check_exit_no_data(action_result, response):
                 response.std_err = response.std_err.decode("UTF-8")
             except:
                 pass
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
     return phantom.APP_SUCCESS
 
 
 def check_exit_no_data2(action_result, response):
     if response.std_err:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
     return phantom.APP_SUCCESS
 
 
 def check_exit_no_data_stdout(action_result, response):
     # Same as above, but for when the error message appears in std_out instead of std_err
     if response.status_code:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_out)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_out)}")
     return phantom.APP_SUCCESS
 
 
 def ensure_no_errors(action_result, response):
     if response.status_code and response.std_err:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}{}".format(response.std_out, response.std_err))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {response.std_out}{response.std_err}")
     return phantom.APP_SUCCESS
 
 
 def list_processes(action_result, response):
     if response.status_code != 0:
-        return action_result.set_status(
-            phantom.APP_ERROR, "Error: Returned non-zero status code. stderr: {}".format(clean_str(response.std_err))
-        )
+        return action_result.set_status(phantom.APP_ERROR, f"Error: Returned non-zero status code. stderr: {clean_str(response.std_err)}")
 
     output = response.std_out
     processes = json.loads(output)
@@ -128,15 +125,13 @@ def list_processes(action_result, response):
 
 def terminate_process(action_result, response):
     if response.std_err:
-        return action_result.set_status(phantom.APP_ERROR, "Error terminating process: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error terminating process: {clean_str(response.std_err)}")
     return phantom.APP_SUCCESS
 
 
 def list_connections(action_result, response):
     if response.status_code != 0:
-        return action_result.set_status(
-            phantom.APP_ERROR, "Error: Returned non-zero status code. stderr: {}".format(clean_str(response.std_err))
-        )
+        return action_result.set_status(phantom.APP_ERROR, f"Error: Returned non-zero status code. stderr: {clean_str(response.std_err)}")
 
     lines = response.std_out.splitlines()
     for line in lines[4:]:
@@ -194,7 +189,6 @@ def parse_rule(action_result, rule_lines):
 
 
 def filtered_rule(action_result, rule, filter_port=None, filter_ip=None, **kwargs):
-
     if filter_port:
         if rule.get("remote_port") == filter_port:
             pass
@@ -263,13 +257,13 @@ def create_firewall_rule(action_result, response):
             message = response.std_out.splitlines()[1]
         except:
             message = response.std_out
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(message))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {message}")
     return phantom.APP_SUCCESS
 
 
 def delete_firewall_rule(action_result, response):
     if response.status_code:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_out)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_out)}")
 
     # action_result.add_data({'message': response.std_out})
     summary = action_result.update_summary({})
@@ -357,14 +351,14 @@ def _parse_rule(rule):
 
 def list_applocker_policies(action_result, response):
     if response.status_code:
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
     try:
         # Get rid of all the linebreaks to prevent errors during reading
         data = xmltodict.parse("".join(response.std_out.splitlines()))
     except TypeError:
         data = xmltodict.parse("".join((response.std_out.decode("utf-8")).splitlines()))
     except Exception as e:
-        return action_result.set_status(phantom.APP_ERROR, "Error parsing XML response: {}".format(str(e)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error parsing XML response: {e!s}")
 
     try:
         rule_collection = data["AppLockerPolicy"]["RuleCollection"]
@@ -400,7 +394,7 @@ def decodeb64_add_to_vault(action_result, response, container_id, file_name):
     if response.status_code:
         if isinstance(response.std_err, bytes):
             response.std_err = response.std_err.decode("UTF-8")
-        return action_result.set_status(phantom.APP_ERROR, "Error running command: {}".format(clean_str(response.std_err)))
+        return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
 
     b64string = response.std_out
 
