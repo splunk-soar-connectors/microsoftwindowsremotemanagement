@@ -1,11 +1,4 @@
 Splunk SOAR Windows Remote Management
 Copyright (c) 2018-2025 Splunk Inc.
 
-Third-party Software Attributions:
-
-Library: pycparser
-Version: 2.21
-License: BSD 3
-Copyright 2008-2020 Eli Bendersky
-Copyright parser in Python
-Copyright parser in Python
+Third Party Software Attributions:
