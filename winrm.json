@@ -16,7 +16,7 @@
     "main_module": "winrm_connector.py",
     "min_phantom_version": "6.3.0",
     "fips_compliant": true,
-    "python_version": "3",
+    "python_version": ["3.9", "3.13"],
     "latest_tested_versions": [
         "On-premise, Windows Server 2012 R2 Standard"
     ],
