@@ -76,6 +76,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
         :return: error message
         """
 
+        error_code = consts.WINRM_ERROR_CODE_MESSAGE
+        error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
+
         try:
             if e.args:
                 if len(e.args) > 1:
@@ -84,9 +87,6 @@ class WindowsRemoteManagementConnector(BaseConnector):
                 elif len(e.args) == 1:
                     error_code = consts.WINRM_ERROR_CODE_MESSAGE
                     error_message = e.args[0]
-            else:
-                error_code = consts.WINRM_ERROR_CODE_MESSAGE
-                error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
         except:
             error_code = consts.WINRM_ERROR_CODE_MESSAGE
             error_message = consts.WINRM_ERROR_MESSAGE_UNAVAILABLE
