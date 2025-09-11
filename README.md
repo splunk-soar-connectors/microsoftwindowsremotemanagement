@@ -1,9 +1,9 @@
 # Windows Remote Management
 
-Publisher: Splunk \
-Connector Version: 2.3.3 \
-Product Vendor: Microsoft \
-Product Name: Windows Remote Management \
+Publisher: Splunk <br>
+Connector Version: 2.3.3 <br>
+Product Vendor: Microsoft <br>
+Product Name: Windows Remote Management <br>
 Minimum Product Version: 6.3.0
 
 This app integrates with the Windows Remote Management service to execute various actions
@@ -194,35 +194,35 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[run command](#action-run-command) - Execute a command on the endpoint \
-[run script](#action-run-script) - Run a PowerShell script on the endpoint \
-[list processes](#action-list-processes) - List the currently running processes \
-[terminate process](#action-terminate-process) - Terminate a process \
-[list connections](#action-list-connections) - List all active connections \
-[list firewall rules](#action-list-firewall-rules) - List the firewall rules \
-[delete firewall rule](#action-delete-firewall-rule) - Remove a firewall rule using netsh \
-[block ip](#action-block-ip) - Create a firewall rule to block a specified IP \
-[add firewall rule](#action-add-firewall-rule) - Add a firewall rule using netsh \
-[logoff user](#action-logoff-user) - Logoff a user \
-[list sessions](#action-list-sessions) - List all active sessions \
-[deactivate partition](#action-deactivate-partition) - Deactivate a partition \
-[activate partition](#action-activate-partition) - Activate a partition \
-[shutdown system](#action-shutdown-system) - Shutdown a system \
-[restart system](#action-restart-system) - Restart a system \
-[list policies](#action-list-policies) - List AppLocker Policies \
-[block file path](#action-block-file-path) - Create a new AppLocker policy to block a file path \
-[delete policy](#action-delete-policy) - Delete an AppLocker policy \
-[get file](#action-get-file) - Copy a file from the Windows Endpoint to the Vault \
-[upload file](#action-upload-file) - Copy a file from the vault to the Windows Endpoint \
-[copy file](#action-copy-file) - Run the copy command on the Windows Endpoint \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[run command](#action-run-command) - Execute a command on the endpoint <br>
+[run script](#action-run-script) - Run a PowerShell script on the endpoint <br>
+[list processes](#action-list-processes) - List the currently running processes <br>
+[terminate process](#action-terminate-process) - Terminate a process <br>
+[list connections](#action-list-connections) - List all active connections <br>
+[list firewall rules](#action-list-firewall-rules) - List the firewall rules <br>
+[delete firewall rule](#action-delete-firewall-rule) - Remove a firewall rule using netsh <br>
+[block ip](#action-block-ip) - Create a firewall rule to block a specified IP <br>
+[add firewall rule](#action-add-firewall-rule) - Add a firewall rule using netsh <br>
+[logoff user](#action-logoff-user) - Logoff a user <br>
+[list sessions](#action-list-sessions) - List all active sessions <br>
+[deactivate partition](#action-deactivate-partition) - Deactivate a partition <br>
+[activate partition](#action-activate-partition) - Activate a partition <br>
+[shutdown system](#action-shutdown-system) - Shutdown a system <br>
+[restart system](#action-restart-system) - Restart a system <br>
+[list policies](#action-list-policies) - List AppLocker Policies <br>
+[block file path](#action-block-file-path) - Create a new AppLocker policy to block a file path <br>
+[delete policy](#action-delete-policy) - Delete an AppLocker policy <br>
+[get file](#action-get-file) - Copy a file from the Windows Endpoint to the Vault <br>
+[upload file](#action-upload-file) - Copy a file from the vault to the Windows Endpoint <br>
+[copy file](#action-copy-file) - Run the copy command on the Windows Endpoint <br>
 [delete file](#action-delete-file) - Run the delete command on the Windows Endpoint
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -237,7 +237,7 @@ No Output
 
 Execute a command on the endpoint
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Unless you implement a custom parser, this action will always succeed regardless of the input. Either a <b>command</b> or pair of <b>command_id</b> and <b>shell_id</b> must be specified. If a <b>command_id</b> is present, all other parameters will be ignored. <p><b>Note:</b> The command_id and shell_id you provide to fetch the output can only be used once because once the output is fetched successfully server will remove output from its cache.</p>
@@ -280,7 +280,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Run a PowerShell script on the endpoint
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 The script you provide can either be in the vault, or it can just be a string of the script to run. If both values are present, it will use the <b>script_file</b> over the <b>script_str</b>. Unless you implement a custom parser, this action will always succeed regardless of the input. If <b>command_id</b> and <b>shell_id</b> are present, <b>script_file</b> and <b>script_str</b> will be ignored. This action will fail if at least one of <b>script_file</b>, <b>script_str</b>, or the pair of <b>command_id</b> and <b>shell_id</b> are not specified. <p><b>Note:</b> The command_id and shell_id you provide to fetch the output can only be used once because once the output is fetched successfully server will remove output from its cache.</p>
@@ -323,7 +323,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List the currently running processes
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -357,7 +357,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Terminate a process
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -386,7 +386,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List all active connections
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -418,7 +418,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List the firewall rules
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 When you are using the <b>other</b> parameter, you can match for any field which is returned in the action result. It will only return a rule if it matches all of the criteria, not if it matches at least one.
@@ -467,7 +467,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Remove a firewall rule using netsh
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action will invoke the command <code>netsh advfirewall firewall delete rule</code>, and the rest is determined by the input. At a minimum, the rule name must be provided, but if you need to you can also specify any other arguments which the command accepts, in the same manner, that input from the <b>add firewall rule</b> gets added.
@@ -511,7 +511,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a firewall rule to block a specified IP
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -540,7 +540,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add a firewall rule using netsh
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action will invoke the command <code>netsh advfirewall firewall add rule</code>, where the rest is determined by the input. Each <b>key-value</b> pair from the <b>other</b> parameter will be added in the form of <b>key</b>=<b>value</b>. The user input will be sanitized.
@@ -585,7 +585,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Logoff a user
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -612,7 +612,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List all active sessions
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -642,7 +642,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Deactivate a partition
 
-Type: **contain** \
+Type: **contain** <br>
 Read only: **False**
 
 Deactivates the system partitions of a machine, which disallows booting from said partition. The subsequent boot of the machine results in using the next option specified in the BIOS to boot from. Often used to netboot for remote reimaging.
@@ -669,7 +669,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Activate a partition
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -694,7 +694,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Shutdown a system
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -721,7 +721,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Restart a system
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -748,7 +748,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List AppLocker Policies
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -789,7 +789,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a new AppLocker policy to block a file path
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 By default, this policy will apply to the "Everyone" group. You can specify the user with either a variety of formats, which are documented <a href="https://technet.microsoft.com/en-us/library/ee460963.aspx" target="_blank">here</a>. By specifying LDAP, it will apply that policy to that GPO, as opposed to just the local machine. By default, Windows <b>does not</b> have the service required service running for AppLocker policies to be enforced. The <b>Application Identity</b> service must be running for AppLocker to enforce its policies.
@@ -826,7 +826,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Delete an AppLocker policy
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -855,7 +855,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Copy a file from the Windows Endpoint to the Vault
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -883,7 +883,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Copy a file from the vault to the Windows Endpoint
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -912,7 +912,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Run the copy command on the Windows Endpoint
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 For best results, both the <b>from</b> and <b>to</b> parameters should be absolute paths to their respective locations.
@@ -943,7 +943,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Run the delete command on the Windows Endpoint
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 For best results, the <b>file path</b> parameter should be an absolute path to a location.
