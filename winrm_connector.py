@@ -18,7 +18,7 @@
 import base64
 import copy
 import csv
-import imp
+import importlib.util
 import ipaddress
 import json
 import ntpath
@@ -172,7 +172,14 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
-            custom_parser = imp.load_source("custom_parser", file_path)
+            spec = importlib.util.spec_from_file_location("custom_parser", file_path)
+            if spec is None:
+                return (
+                    action_result.set_status(phantom.APP_ERROR, f"Error creating custom parser: Unable to load spec from {file_path}"),
+                    None,
+                )
+            custom_parser = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(custom_parser)
         except Exception as e:
             return (
                 action_result.set_status(phantom.APP_ERROR, f"Error creating custom parser: {self._get_error_message_from_exception(e)}"),
