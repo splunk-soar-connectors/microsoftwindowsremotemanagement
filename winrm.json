@@ -3334,7 +3334,7 @@
             },
             {
                 "module": "pykerberos",
-                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pyspnego",
