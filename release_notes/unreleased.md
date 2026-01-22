@@ -1,2 +1,1 @@
 **Unreleased**
-* update pykerberos libraries
