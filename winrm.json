@@ -9,7 +9,7 @@
     "product_name": "Windows Remote Management",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2018-2025 Splunk Inc.",
+    "license": "Copyright (c) 2018-2026 Splunk Inc.",
     "app_version": "2.3.4",
     "utctime_updated": "2025-12-03T21:41:18.627423Z",
     "package_name": "phantom_winrm",
@@ -3334,7 +3334,7 @@
             },
             {
                 "module": "pykerberos",
-                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/pykerberos-1.2.4-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pyspnego",
