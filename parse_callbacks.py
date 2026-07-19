@@ -352,11 +352,17 @@ def _parse_rule(rule):
 def list_applocker_policies(action_result, response):
     if response.status_code:
         return action_result.set_status(phantom.APP_ERROR, f"Error running command: {clean_str(response.std_err)}")
+    xml_response = response.std_out
+    if len(xml_response) > 20 * 1024 * 1024:
+        return action_result.set_status(phantom.APP_ERROR, "AppLocker XML response exceeds the 20 MiB safety limit")
+    if isinstance(xml_response, bytes):
+        xml_response = xml_response.decode("utf-8", errors="replace")
+    if "<!DOCTYPE" in xml_response.upper():
+        return action_result.set_status(phantom.APP_ERROR, "AppLocker XML response contains a prohibited document type declaration")
+
     try:
         # Get rid of all the linebreaks to prevent errors during reading
-        data = xmltodict.parse("".join(response.std_out.splitlines()))
-    except TypeError:
-        data = xmltodict.parse("".join((response.std_out.decode("utf-8")).splitlines()))
+        data = xmltodict.parse("".join(xml_response.splitlines()))
     except Exception as e:
         return action_result.set_status(phantom.APP_ERROR, f"Error parsing XML response: {e!s}")
 
