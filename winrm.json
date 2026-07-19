@@ -30,13 +30,13 @@
         "verify_server_cert": {
             "description": "Verify Server Certificate",
             "data_type": "boolean",
-            "default": false,
+            "default": true,
             "order": 1
         },
         "default_protocol": {
-            "description": "Default protocol for actions",
+            "description": "Default protocol for actions. Basic authentication over HTTP exposes credentials in cleartext.",
             "data_type": "string",
-            "default": "http",
+            "default": "https",
             "order": 2,
             "value_list": [
                 "http",
@@ -46,7 +46,7 @@
         "default_port": {
             "description": "Default port for actions",
             "data_type": "numeric",
-            "default": 5985,
+            "default": 5986,
             "order": 3
         },
         "domain": {

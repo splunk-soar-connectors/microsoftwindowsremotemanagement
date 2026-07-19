@@ -250,9 +250,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
     def _init_session(self, action_result, param=None):
         config = self.get_config()
 
-        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, "http")
+        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, "https")
         ret_val, default_port = self._validate_integer(
-            action_result, config.get(consts.WINRM_CONFIG_PORT, 5985 if default_protocol == "http" else 5986), "Default port", True
+            action_result, config.get(consts.WINRM_CONFIG_PORT, 5986 if default_protocol == "https" else 5985), "Default port", True
         )
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -272,7 +272,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         transport = config.get(consts.WINRM_CONFIG_TRANSPORT)
         domain = self._handle_py_ver_compat_for_input_str(config.get(consts.WINRM_CONFIG_DOMAIN))
 
-        verify_bool = config.get(phantom.APP_JSON_VERIFY, False)
+        verify_bool = config.get(phantom.APP_JSON_VERIFY, True)
         cert_pem_path = None
         cert_key_pem_path = None
         cert_ca_trust_path = config.get(consts.WINRM_CONFIG_CA_TRUST, "legacy_requests")
@@ -283,6 +283,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             verify = "ignore"
 
         if transport == "basic" or transport == "plaintext":
+            if endpoint.lower().startswith("http://"):
+                self.save_progress("Warning: Basic or plaintext transport over HTTP exposes credentials in cleartext")
             if domain:
                 self.save_progress("Warning: Domain is set but transport type is set to 'basic'")
         elif transport == "ntlm":
