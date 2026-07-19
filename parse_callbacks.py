@@ -39,6 +39,12 @@ def basic(action_result, response):
     data["std_err"] = response.std_err
 
     action_result.add_data(data)
+    if response.status_code:
+        std_err = response.std_err.decode("utf-8", errors="replace") if isinstance(response.std_err, bytes) else response.std_err
+        return action_result.set_status(
+            phantom.APP_ERROR,
+            f"Command failed with exit code {response.status_code}: {clean_str(std_err)}",
+        )
     return phantom.APP_SUCCESS
 
 
