@@ -164,7 +164,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return phantom.APP_SUCCESS, pc.basic
 
         try:
-            success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
+            _success, _message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
             file_path = next(iter(file_info)).get("path")
@@ -915,7 +915,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
         try:
             vault_id = self._handle_py_ver_compat_for_input_str(param["vault_id"])
-            success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
+            _success, _message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
             path = next(iter(file_info)).get("path")
