@@ -1,7 +1,7 @@
 # Windows Remote Management
 
 Publisher: Splunk <br>
-Connector Version: 2.3.5 <br>
+Connector Version: 3.0.0 <br>
 Product Vendor: Microsoft <br>
 Product Name: Windows Remote Management <br>
 Minimum Product Version: 6.3.0
