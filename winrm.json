@@ -30,13 +30,13 @@
         "verify_server_cert": {
             "description": "Verify Server Certificate",
             "data_type": "boolean",
-            "default": false,
+            "default": true,
             "order": 1
         },
         "default_protocol": {
-            "description": "Default protocol for actions",
+            "description": "Default protocol for actions. Basic authentication over HTTP exposes credentials in cleartext.",
             "data_type": "string",
-            "default": "http",
+            "default": "https",
             "order": 2,
             "value_list": [
                 "http",
@@ -46,7 +46,7 @@
         "default_port": {
             "description": "Default port for actions",
             "data_type": "numeric",
-            "default": 5985,
+            "default": 5986,
             "order": 3
         },
         "domain": {
@@ -3326,7 +3326,7 @@
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py3/cryptography-46.0.3-cp38-abi3-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/cryptography-49.0.0-cp39-abi3-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pycparser",
@@ -3338,7 +3338,7 @@
             },
             {
                 "module": "pyspnego",
-                "input_file": "wheels/py3/pyspnego-0.12.0-py3-none-any.whl"
+                "input_file": "wheels/py3/pyspnego-0.12.1-py3-none-any.whl"
             },
             {
                 "module": "pywinrm",
@@ -3350,7 +3350,7 @@
             },
             {
                 "module": "typing_extensions",
-                "input_file": "wheels/py3/typing_extensions-4.15.0-py3-none-any.whl"
+                "input_file": "wheels/py3/typing_extensions-4.16.0-py3-none-any.whl"
             }
         ]
     },
@@ -3358,15 +3358,15 @@
         "wheel": [
             {
                 "module": "cffi",
-                "input_file": "wheels/py313/cffi-2.0.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py313/cffi-2.1.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py3/cryptography-46.0.3-cp311-abi3-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py3/cryptography-49.0.0-cp311-abi3-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pycparser",
-                "input_file": "wheels/py3/pycparser-2.23-py3-none-any.whl"
+                "input_file": "wheels/py3/pycparser-3.0-py3-none-any.whl"
             },
             {
                 "module": "pykerberos",
@@ -3374,7 +3374,7 @@
             },
             {
                 "module": "pyspnego",
-                "input_file": "wheels/py3/pyspnego-0.12.0-py3-none-any.whl"
+                "input_file": "wheels/py3/pyspnego-0.12.1-py3-none-any.whl"
             },
             {
                 "module": "pywinrm",

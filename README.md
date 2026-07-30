@@ -182,7 +182,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **endpoint** | optional | string | IP/Hostname (For TEST CONNECTIVITY and default, if not provided in an action) |
 **verify_server_cert** | optional | boolean | Verify Server Certificate |
-**default_protocol** | optional | string | Default protocol for actions |
+**default_protocol** | optional | string | Default protocol for actions. Basic authentication over HTTP exposes credentials in cleartext. |
 **default_port** | optional | numeric | Default port for actions |
 **domain** | optional | string | Domain |
 **username** | required | string | Username |

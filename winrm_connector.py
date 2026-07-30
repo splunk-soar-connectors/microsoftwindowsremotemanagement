@@ -143,7 +143,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # Get the contents of a file in the vault
 
         try:
-            success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
+            _success, _message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
             file_path = next(iter(file_info)).get("path")
@@ -164,7 +164,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return phantom.APP_SUCCESS, pc.basic
 
         try:
-            success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
+            _success, _message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
             file_path = next(iter(file_info)).get("path")
@@ -198,7 +198,20 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # To avoid any shenanigans, we need to quote the arguments
         # The breaking character in PS is '`', so first we break any breaking characters, then we
         # break any double quotes which are found, then we break any $, which is used to declare variables
-        return string.replace("`", "``").replace('"', '`"').replace("$", "`$").replace("&", "`&").replace(")", "`)").replace("(", "`(")
+        return (
+            string.replace("`", "``")
+            .replace('"', '`"')
+            .replace("$", "`$")
+            .replace("&", "`&")
+            .replace(")", "`)")
+            .replace("(", "`(")
+            .replace(";", "`;")
+            .replace("|", "`|")
+            .replace("<", "`<")
+            .replace(">", "`>")
+            .replace("\r", "`r")
+            .replace("\n", "`n")
+        )
 
     def _get_fips_enabled(self):
         fips_enabled = is_fips_enabled()
@@ -237,9 +250,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
     def _init_session(self, action_result, param=None):
         config = self.get_config()
 
-        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, "http")
+        default_protocol = config.get(consts.WINRM_CONFIG_PROTOCOL, "https")
         ret_val, default_port = self._validate_integer(
-            action_result, config.get(consts.WINRM_CONFIG_PORT, 5985 if default_protocol == "http" else 5986), "Default port", True
+            action_result, config.get(consts.WINRM_CONFIG_PORT, 5986 if default_protocol == "https" else 5985), "Default port", True
         )
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -259,7 +272,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         transport = config.get(consts.WINRM_CONFIG_TRANSPORT)
         domain = self._handle_py_ver_compat_for_input_str(config.get(consts.WINRM_CONFIG_DOMAIN))
 
-        verify_bool = config.get(phantom.APP_JSON_VERIFY, False)
+        verify_bool = config.get(phantom.APP_JSON_VERIFY, True)
         cert_pem_path = None
         cert_key_pem_path = None
         cert_ca_trust_path = config.get(consts.WINRM_CONFIG_CA_TRUST, "legacy_requests")
@@ -270,6 +283,8 @@ class WindowsRemoteManagementConnector(BaseConnector):
             verify = "ignore"
 
         if transport == "basic" or transport == "plaintext":
+            if endpoint.lower().startswith("http://"):
+                self.save_progress("Warning: Basic or plaintext transport over HTTP exposes credentials in cleartext")
             if domain:
                 self.save_progress("Warning: Domain is set but transport type is set to 'basic'")
         elif transport == "ntlm":
@@ -900,7 +915,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
 
         try:
             vault_id = self._handle_py_ver_compat_for_input_str(param["vault_id"])
-            success, message, file_info = phantom_rules.vault_info(vault_id=vault_id)
+            _success, _message, file_info = phantom_rules.vault_info(vault_id=vault_id)
             if not file_info:
                 return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID)
             path = next(iter(file_info)).get("path")
@@ -946,7 +961,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         path_from = self._handle_py_ver_compat_for_input_str(param["from"])
         path_to = self._handle_py_ver_compat_for_input_str(param["to"])
 
-        ps_script = f"& copy {self._sanitize_string(path_from)} {self._sanitize_string(path_to)}"
+        ps_script = f'& copy "{self._sanitize_string(path_from)}" "{self._sanitize_string(path_to)}"'
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
@@ -962,7 +977,7 @@ class WindowsRemoteManagementConnector(BaseConnector):
         file_path = self._handle_py_ver_compat_for_input_str(param["file_path"])
         force_delete = "-Force " if param.get("force") else ""
 
-        ps_script = f"& del {force_delete}{self._sanitize_string(file_path)}"
+        ps_script = f'& del {force_delete}"{self._sanitize_string(file_path)}"'
 
         ret_val = self._run_ps(action_result, ps_script, parse_callback=pc.check_exit_no_data2)
         if phantom.is_fail(ret_val):
