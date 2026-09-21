@@ -199,7 +199,14 @@ class WindowsRemoteManagementConnector(BaseConnector):
         # The breaking character in PS is '`', so first we break any breaking characters, then we
         # break any double quotes which are found, then we break any $, which is used to declare variables
         return (
-            string.replace("`", "``")
+            string.replace("\u201c", '"')
+            .replace("\u201d", '"')
+            .replace("\u201e", '"')
+            .replace("\u2018", "'")
+            .replace("\u2019", "'")
+            .replace("\u201a", "'")
+            .replace("\u201b", "'")
+            .replace("`", "``")
             .replace('"', '`"')
             .replace("$", "`$")
             .replace("&", "`&")
