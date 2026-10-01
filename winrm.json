@@ -3326,7 +3326,7 @@
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py39/cryptography-50.0.1-cp39-abi3-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/cryptography-50.0.2-cp39-abi3-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pycparser",
@@ -3338,7 +3338,7 @@
             },
             {
                 "module": "pyspnego",
-                "input_file": "wheels/py3/pyspnego-0.12.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pyspnego-0.12.3-py3-none-any.whl"
             },
             {
                 "module": "pywinrm",
@@ -3362,7 +3362,7 @@
             },
             {
                 "module": "cryptography",
-                "input_file": "wheels/py3/cryptography-50.0.1-cp311-abi3-manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py3/cryptography-50.0.2-cp311-abi3-manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "pycparser",
@@ -3374,7 +3374,7 @@
             },
             {
                 "module": "pyspnego",
-                "input_file": "wheels/py3/pyspnego-0.12.2-py3-none-any.whl"
+                "input_file": "wheels/py3/pyspnego-0.12.3-py3-none-any.whl"
             },
             {
                 "module": "pywinrm",
