@@ -18,6 +18,7 @@
 import base64
 import copy
 import csv
+import importlib.machinery
 import importlib.util
 import ipaddress
 import json
@@ -172,7 +173,9 @@ class WindowsRemoteManagementConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, consts.WINRM_ERROR_INVALID_VAULT_ID), None
 
         try:
-            spec = importlib.util.spec_from_file_location("custom_parser", file_path)
+            # Vault paths are extensionless, so Python cannot infer a source loader.
+            loader = importlib.machinery.SourceFileLoader("custom_parser", file_path)
+            spec = importlib.util.spec_from_file_location("custom_parser", file_path, loader=loader)
             if spec is None:
                 return (
                     action_result.set_status(phantom.APP_ERROR, f"Error creating custom parser: Unable to load spec from {file_path}"),
