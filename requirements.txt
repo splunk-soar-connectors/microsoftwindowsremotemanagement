@@ -1,3 +1,4 @@
+-c constraints.txt
 pykerberos==1.2.4; sys_platform == "linux"
 pywinrm==0.5.0
 # Pinned to the current platform version
